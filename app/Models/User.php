@@ -20,6 +20,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'keycloak_id', // Tambahkan ini
+    'avatar',      // Tambahkan ini
+    'kc_payload',  // Tambahkan ini
     ];
 
     /**
