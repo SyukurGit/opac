@@ -4,7 +4,10 @@
   <meta charset="utf-8">
   <title>Home | opac</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+    @vite('resources/css/app.css')
+
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <script>
     tailwind.config = {
       theme: {
@@ -54,10 +57,10 @@
             </svg>
           </div>
           <h1 class="text-3xl font-bold text-white mb-2 animate-fade-in">
-            Selamat datang di halaman publik
+            Selamat datang di Sistem Pembayaran Denda
           </h1>
           <p class="text-white/70 animate-fade-in" style="animation-delay: 0.2s;">
-            OPAC - Online Public Access Catalog
+            OPAC - Ar-Raniry
           </p>
         </div>
 
@@ -122,7 +125,7 @@
               </a>
               
               <p class="text-white/50 text-sm mt-4">
-                Masuk untuk mengakses katalog lengkap
+                Login untuk akses lengkap
               </p>
             </div>
           @endauth
@@ -131,7 +134,7 @@
         <!-- Footer info -->
         <div class="mt-8 pt-6 border-t border-white/10 text-center animate-fade-in" style="animation-delay: 0.6s;">
           <p class="text-white/40 text-xs">
-            Sistem Manajemen Perpustakaan Digital
+            Sistem Manajemen Perpustakaan Uin Ar-Raniry
           </p>
         </div>
       </div>
