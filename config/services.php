@@ -23,17 +23,13 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
-
-    // config/services.php
-'keycloak' => [
-    'client_id'     => env('KEYCLOAK_CLIENT_ID'),
-    'client_secret' => env('KEYCLOAK_CLIENT_SECRET', null), // boleh null untuk Public Client
-    'redirect'      => env('KEYCLOAK_REDIRECT_URI'),
-    'base_url'      => env('KEYCLOAK_BASE_URL'),   // URL Keycloak server
-    'realms'        => env('KEYCLOAK_REALM'),      // Nama realm
-],
-
+    'keycloak' => [
+        'client_id' => env('KEYCLOAK_CLIENT_ID'),
+        'client_secret' => env('KEYCLOAK_CLIENT_SECRET'), // kosongkan untuk Public Client
+        'redirect' => env('KEYCLOAK_REDIRECT_URI'),
+        'base_url' => env('KEYCLOAK_BASE_URL'),
+        'realms' => env('KEYCLOAK_REALM'),
+    ],
 
     'slack' => [
         'notifications' => [

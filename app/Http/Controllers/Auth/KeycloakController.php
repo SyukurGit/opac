@@ -15,8 +15,10 @@ class KeycloakController extends Controller
     // 1) Redirect ke SSO
     public function redirect()
     {
+
+        
         return Socialite::driver('keycloak')
-            ->scopes(['openid','profile','email']) // Keycloak > 3.2 butuh 'openid'
+            ->scopes(['openid','profile','email']) 
             ->redirect();
     }
 
