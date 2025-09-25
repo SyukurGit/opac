@@ -27,8 +27,8 @@ class KeycloakController extends Controller
     {
         try {
             $kcUser = Socialite::driver('keycloak')->user();
-            // print_r( $kcUser);
-            // die();
+            print_r( $kcUser);
+            die();
         } catch (\Throwable $e) {
             return redirect()->route('home')->with('error', 'Login gagal: '.$e->getMessage());
         }
@@ -39,7 +39,7 @@ class KeycloakController extends Controller
         $name  = $kcUser->getName()
               ?: ($kcUser->user['name'] ?? $kcUser->getNickname() ?? 'User '.Str::substr($id, 0, 6));
         $avatar = $kcUser->getAvatar();
-        $username = $kcUser->getnickname();
+        $username = $kcUser->getNickname();
 
 
 
@@ -48,10 +48,7 @@ class KeycloakController extends Controller
             $email = "kc_{$id}@noemail.local";
         }
 
-        // Upsert user lokal
-        $user = User::updateOrCreate(
-            ['email' => $email],
-            [
+$valeu = [
                 'name'         => $name,
                 'keycloak_id'  => $id,
                 'avatar'       => $avatar,
@@ -60,7 +57,15 @@ class KeycloakController extends Controller
                 'username' => $username,
                 'status' => false,
 
-            ]
+];
+
+// print_r($valeu);
+// die();
+
+        // Upsert user lokal
+        $user = User::updateOrCreate(
+            ['email' => $email],
+          $valeu
         );
 
         Auth::login($user, remember: true);
@@ -68,6 +73,8 @@ class KeycloakController extends Controller
         // Arahkan ke dashboard (terproteksi)
         return redirect()->intended(route('dashboard'));
     }
+
+
 
     // 3) Logout dari app + Keycloak (RP-Initiated Logout)
     public function logout()
