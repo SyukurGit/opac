@@ -27,8 +27,8 @@ class KeycloakController extends Controller
     {
         try {
             $kcUser = Socialite::driver('keycloak')->user();
-            print_r( $kcUser);
-            die();
+            // print_r( $kcUser);
+            // die();
         } catch (\Throwable $e) {
             return redirect()->route('home')->with('error', 'Login gagal: '.$e->getMessage());
         }
@@ -36,8 +36,8 @@ class KeycloakController extends Controller
         // Ambil field umum
         $id    = $kcUser->getId();       // sub
         $email = $kcUser->getEmail() ?: ($kcUser->user['email'] ?? null);
-        $name  = $kcUser->getName()
-              ?: ($kcUser->user['name'] ?? $kcUser->getNickname() ?? 'User '.Str::substr($id, 0, 6));
+        $name  = $kcUser->getName();
+            //   ?: ($kcUser->user['name'] ?? $kcUser->getNickname() ?? 'User '.Str::substr($id, 0, 6));
         $avatar = $kcUser->getAvatar();
         $username = $kcUser->getNickname();
 
@@ -55,7 +55,6 @@ $valeu = [
                 'kc_payload'   => json_encode($kcUser->user),
                 'email_verified_at' => now(),
                 'username' => $username,
-                'status' => false,
 
 ];
 

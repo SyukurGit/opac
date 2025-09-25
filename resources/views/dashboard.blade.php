@@ -110,14 +110,27 @@
             <div class="flex-1">
               <h2 class="mb-2 text-3xl font-bold text-white">Selamat datang!</h2>
               <p class="mb-1 text-xl text-white/90">
-                Halo, <span class="font-semibold text-blue-300">{{ auth()->user()->name }}</span>
+                Halo, <span class="font-semibold text-blue-300">{{ auth()->user()->name }}  </span>
               </p>
+
+
+              <p class="flex items-center text-white/60"> Nim :
+                {{ auth()->user()->username }}
+              </p>
+
               <p class="flex items-center text-white/60">
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 {{ auth()->user()->email }}
               </p>
+
+               <p class="flex items-center text-white/60"> Role : -
+              </p>
+
+               
+
+
             </div>
           </div>
         </div>
@@ -215,3 +228,6 @@
     </footer>
   </body>
 </html>
+
+
+

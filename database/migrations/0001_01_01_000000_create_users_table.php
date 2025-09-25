@@ -9,35 +9,40 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username')->unique()->nullable();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
-            $table->boolean('status')->nullable();
-        });
+// database/migrations/0001_01_01_000000_create_users_table.php
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
+public function up(): void
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        $table->string('keycloak_id')->nullable()->unique(); // ID dari Keycloak
+        $table->string('name');
+        $table->string('username')->unique()->nullable(); // Untuk menyimpan NIM/nickname
+        $table->string('email')->unique();
+        $table->string('avatar')->nullable(); // URL Avatar
+        $table->timestamp('email_verified_at')->nullable();
+        $table->string('password')->nullable();
+        $table->boolean('status')->default(false); 
+        $table->json('kc_payload')->nullable(); // Data mentah dari Keycloak
+        $table->rememberToken();
+        $table->timestamps();
+    });
 
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
-    }
+    Schema::create('password_reset_tokens', function (Blueprint $table) {
+        $table->string('email')->primary();
+        $table->string('token');
+        $table->timestamp('created_at')->nullable();
+    });
+
+    Schema::create('sessions', function (Blueprint $table) {
+        $table->string('id')->primary();
+        $table->foreignId('user_id')->nullable()->index();
+        $table->string('ip_address', 45)->nullable();
+        $table->text('user_agent')->nullable();
+        $table->longText('payload');
+        $table->integer('last_activity')->index();
+    });
+}
 
     /**
      * Reverse the migrations.
