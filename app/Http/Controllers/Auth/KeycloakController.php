@@ -27,6 +27,8 @@ class KeycloakController extends Controller
     {
         try {
             $kcUser = Socialite::driver('keycloak')->user();
+            // print_r( $kcUser);
+            // die();
         } catch (\Throwable $e) {
             return redirect()->route('home')->with('error', 'Login gagal: '.$e->getMessage());
         }
@@ -37,6 +39,9 @@ class KeycloakController extends Controller
         $name  = $kcUser->getName()
               ?: ($kcUser->user['name'] ?? $kcUser->getNickname() ?? 'User '.Str::substr($id, 0, 6));
         $avatar = $kcUser->getAvatar();
+        $username = $kcUser->getnickname();
+
+
 
         // Kalau email tak tersedia, buat placeholder aman berbasis sub (hindari bentrok unique)
         if (!$email) {
@@ -52,6 +57,9 @@ class KeycloakController extends Controller
                 'avatar'       => $avatar,
                 'kc_payload'   => json_encode($kcUser->user),
                 'email_verified_at' => now(),
+                'username' => $username,
+                'status' => false,
+
             ]
         );
 
