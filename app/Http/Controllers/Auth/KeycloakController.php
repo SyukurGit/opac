@@ -23,6 +23,9 @@ class KeycloakController extends Controller
             ->redirect();
     }
 
+
+    
+
     /**
      * Menerima informasi pengguna dari Keycloak setelah login berhasil.
      */
@@ -46,24 +49,18 @@ class KeycloakController extends Controller
         }
     }
 
-    /**
-     * Mengeluarkan pengguna dari aplikasi dan Keycloak.
-     */
+   
  
   public function logout()
     {
-        // Logout dari aplikasi (hapus sesi Laravel)
         Auth::logout();
 
-        // (Opsional) redirect kembali ke home setelah logout di Keycloak
         $redirectUri = Config::get('app.url'); // http://localhost:8000
 
-        // Gunakan helper resmi provider (pastikan Post Logout Redirect URIs sudah diisi)
         return redirect(
             Socialite::driver('keycloak')->getLogoutUrl($redirectUri, env('KEYCLOAK_CLIENT_ID'))
         );
-        // Catatan: getLogoutUrl mendukung kombinasi client_id / id_token_hint (Keycloak v18+).
-        // Pastikan konfigurasi di Keycloak mengizinkan post_logout_redirect_uri.
+       
     }
 
 }
