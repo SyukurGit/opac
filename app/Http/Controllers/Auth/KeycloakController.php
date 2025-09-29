@@ -69,7 +69,7 @@ $valeu = [
 
         Auth::login($user, remember: true);
 
-        // Arahkan ke dashboard (terproteksi)
+        // Arahkan ke dashboard (terproteksi)admin
     return redirect('/admin/dashboard');
     }
 
