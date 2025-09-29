@@ -14,7 +14,18 @@ use App\Http\Controllers\Admin\DashboardController;
 // Halaman utama
 Route::get('/', function () {
     return view('home');
+})->name('home'); 
+
+
+
+Route::get('/debug-session', function () {
+    return [
+        'auth'    => Auth::check(),
+        'user'    => Auth::user(),
+        'session' => session()->all(),
+    ];
 });
+
 
 // Rute untuk otentikasi Keycloak
 Route::get('/login', [KeycloakController::class, 'redirect'])->name('login');

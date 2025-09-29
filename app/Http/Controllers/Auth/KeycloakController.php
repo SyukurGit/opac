@@ -1,82 +1,56 @@
 <?php
 
-// app/Http/Controllers/Auth/KeycloakController.php
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Services\Auth\KeycloakService; // <- Pastikan use statement ini benar
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request; // <-- Tambahkan ini
+
 
 class KeycloakController extends Controller
 {
-    // 1) Redirect ke SSO
+    /**
+     * Mengarahkan pengguna ke halaman otentikasi Keycloak.
+     */
     public function redirect()
     {
-
-        
         return Socialite::driver('keycloak')
-            ->scopes(['openid','profile','email']) 
+            ->scopes(['openid', 'profile', 'email'])
             ->redirect();
     }
 
-    // 2) Callback dari SSO → ambil profil + buat/temukan user
-    public function callback()
+    /**
+     * Menerima informasi pengguna dari Keycloak setelah login berhasil.
+     */
+    public function callback(KeycloakService $keycloakService)
     {
         try {
-            $kcUser = Socialite::driver('keycloak')->user();
-            // print_r( $kcUser);
-            // die();
-        } catch (\Throwable $e) {
-            return redirect()->route('home')->with('error', 'Login gagal: '.$e->getMessage());
+            $keycloakUser = Socialite::driver('keycloak')->user();
+
+            // Panggil service untuk menangani semua logika
+            $user = $keycloakService->handleCallback($keycloakUser);
+
+            // Login-kan pengguna ke aplikasi
+            Auth::login($user, remember: true);
+
+            // Arahkan ke dashboard
+            return redirect()->intended(route('admin.dashboard'));
+
+        } catch (\Exception $e) {
+            Log::error('Keycloak callback process failed: ' . $e->getMessage());
+            return redirect('/')->with('error', 'Terjadi kesalahan saat otentikasi.');
         }
-
-        // Ambil field umum
-        $id    = $kcUser->getId();       // sub
-        $email = $kcUser->getEmail() ?: ($kcUser->user['email'] ?? null);
-        $name  = $kcUser->getName();
-            //   ?: ($kcUser->user['name'] ?? $kcUser->getNickname() ?? 'User '.Str::substr($id, 0, 6));
-        $avatar = $kcUser->getAvatar();
-        $username = $kcUser->getNickname();
-
-
-
-        // Kalau email tak tersedia, buat placeholder aman berbasis sub (hindari bentrok unique)
-        if (!$email) {
-            $email = "kc_{$id}@noemail.local";
-        }
-
-$valeu = [
-                'name'         => $name,
-                'keycloak_id'  => $id,
-                'avatar'       => $avatar,
-                'kc_payload'   => json_encode($kcUser->user),
-                'email_verified_at' => now(),
-                'username' => $username,
-
-];
-
-// print_r($valeu);
-// die();
-
-        // Upsert user lokal
-        $user = User::updateOrCreate(
-            ['email' => $email],
-          $valeu
-        );
-
-        Auth::login($user, remember: true);
-
-        // Arahkan ke dashboard (terproteksi)
-        return redirect()->intended(route('admin.dashboard'));
     }
 
-
-
-    // 3) Logout dari app + Keycloak (RP-Initiated Logout)
-    public function logout()
+    /**
+     * Mengeluarkan pengguna dari aplikasi dan Keycloak.
+     */
+ 
+  public function logout()
     {
         // Logout dari aplikasi (hapus sesi Laravel)
         Auth::logout();
@@ -91,4 +65,5 @@ $valeu = [
         // Catatan: getLogoutUrl mendukung kombinasi client_id / id_token_hint (Keycloak v18+).
         // Pastikan konfigurasi di Keycloak mengizinkan post_logout_redirect_uri.
     }
+
 }
