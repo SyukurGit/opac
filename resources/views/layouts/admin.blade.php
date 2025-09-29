@@ -6,6 +6,8 @@
     <title>Admin Panel - OPAC</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    @vite(['resources/css/app.css','resources/js/app.js'])
+
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -115,6 +117,11 @@
                 </li>
                 </ul>
         </nav>
+
+
+
+
+
 
         <div class="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light rounded shadow-sm mb-4">

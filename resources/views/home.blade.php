@@ -5,6 +5,8 @@
   <title>Home | opac</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite('resources/css/app.css')
+    @vite(['resources/css/app.css','resources/js/app.js'])
+
 
   <script src="https://cdn.tailwindcss.com"></script>
   
@@ -59,6 +61,9 @@
           <h1 class="text-3xl font-bold text-white mb-2 animate-fade-in">
             Selamat datang di Sistem Pembayaran Denda
           </h1>
+
+
+          
           <p class="text-white/70 animate-fade-in" style="animation-delay: 0.2s;">
             OPAC - Ar-Raniry
           </p>
