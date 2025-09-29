@@ -14,7 +14,7 @@
 
     <div class="p-6 bg-white shadow-lg rounded-xl">
         <h2 class="text-lg font-medium text-gray-900 border-b pb-3">Detail Akun Pengguna (dari SSO)</h2>
-        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
             
             <div class="p-4 bg-gray-50 rounded-lg">
                 <dt class="text-sm font-medium text-gray-500">Nama Lengkap</dt>
@@ -38,12 +38,14 @@
         </div>
     </div>
     
+    {{-- PERBAIKAN DI SINI --}}
     <div class="p-6 bg-white shadow-lg rounded-xl">
         <h3 class="text-lg font-medium text-gray-900">Data Lengkap (Raw)</h3>
+        {{-- Menambahkan overflow-x-auto agar bisa discroll ke samping jika konten terlalu lebar --}}
         <div class="mt-2 p-4 text-xs text-gray-700 bg-gray-100 rounded-md overflow-x-auto">
             <pre><code>{{ print_r($user->toArray(), true) }}</code></pre>
         </div>
         <p class="mt-2 text-xs text-gray-500">Ini adalah semua data yang diterima dari sistem SSO untuk pengguna ini, berguna untuk development.</p>
     </div>
 </div>
-@endsection
+@endsection 
