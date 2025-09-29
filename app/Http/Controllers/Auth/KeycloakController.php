@@ -70,7 +70,7 @@ $valeu = [
         Auth::login($user, remember: true);
 
         // Arahkan ke dashboard (terproteksi)
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('admin.dashboard'));
     }
 
 

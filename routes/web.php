@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\DashboardController;
 
 // Halaman utama
 Route::get('/', function () {
-    return view('homePublik');
+    return view('home');
 });
 
 // Rute untuk otentikasi Keycloak
