@@ -125,21 +125,16 @@
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto bg-slate-50 custom-scrollbar">
-                <div class="px-4 py-6 lg:px-6 max-w-7xl mx-auto">
-                    <!-- Page Header -->
-                    <div class="mb-6">
-                        <h2 class="text-2xl font-semibold text-slate-900">
-                            @yield('header')
-                        </h2>
-                    </div>
+           <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100">
+    <div class="container mx-auto px-6 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-semibold text-slate-900">@yield('header')</h1>
+        </div>
 
-                    <!-- Content Area -->
-                    <div class="bg-white rounded-lg border border-slate-200 p-6">
-                        @yield('content')
-                    </div>
-                </div>
-            </main>
+        @yield('content')
+        
+    </div>
+</main>
         </div>
     </div>
 </body>
