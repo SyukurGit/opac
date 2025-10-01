@@ -19,10 +19,11 @@ class DaftarPinjamController extends Controller
 
 
 
-     public function show()
+     public function show($id)
     {
         // Data statis sebagai contoh, nanti ini akan diambil dari API
         $peminjaman = [
+            'id' => $id,
             'member_id' => '230503072',
             'member_name' => 'RISALUL YANTI',
             'item_code' => '0041016TXT03',
@@ -35,7 +36,7 @@ class DaftarPinjamController extends Controller
         ];
 
         // Kirim data ke view
-        return view('admin.detail-pinjam', compact('peminjaman'));
+        return view('admin.daftar-pinjam', compact('peminjaman'));
     }
 
 }

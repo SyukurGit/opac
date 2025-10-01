@@ -53,7 +53,7 @@
                     <td class="p-4 whitespace-nowrap"><div class="text-left text-red-500 font-medium">+3 days</div></td>
                     <td class="p-4 whitespace-nowrap"><div class="text-left text-red-500 font-medium">+3 days</div></td>
                     <td class="p-4 whitespace-nowrap text-center">
-    <a href="{{ route('admin.detail-pinjam', ['id' => $i]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition duration-150 ease-in-out">
+    <a href="{{ route('admin.daftar-pinjam-detail', ['id' => $i]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition duration-150 ease-in-out">
         Detail
     </a>
 </td>

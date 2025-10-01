@@ -39,7 +39,7 @@ Route::get('/logout', [KeycloakController::class, 'logout'])->name('logout');
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/daftar-pinjam', [DaftarPinjamController::class, 'index'])->name('admin.daftar-pinjam');
-        Route::get('/detail-pinjam', [DaftarPinjamController::class, 'show'])->name('admin.detail-pinjam');
+        Route::get('/daftar-pinjam-detail{id}', [DaftarPinjamController::class, 'show'])->name('admin.daftar-pinjam-detail');
 
 
     // Anda bisa menambahkan rute admin lainnya di sini
