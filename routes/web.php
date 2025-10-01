@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 // Cukup import controller satu kali saja
 use App\Http\Controllers\Auth\KeycloakController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DaftarPinjamController; // <-- Tambahkan ini
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,5 +38,9 @@ Route::get('/logout', [KeycloakController::class, 'logout'])->name('logout');
 // Grup rute untuk admin panel
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/daftar-pinjam', [DaftarPinjamController::class, 'index'])->name('admin.daftar-pinjam');
+        Route::get('/detail-pinjam', [DaftarPinjamController::class, 'show'])->name('admin.detail-pinjam');
+
+
     // Anda bisa menambahkan rute admin lainnya di sini
 });
