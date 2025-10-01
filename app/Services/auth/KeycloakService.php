@@ -36,7 +36,6 @@ class KeycloakService
             'name'        => $keycloakUser->getName() ?: ($keycloakUser->user['name'] ?? 'User ' . Str::substr($keycloakUser->getId(), 0, 6)),
             'username'    => $keycloakUser->getNickname(),
             'avatar'      => $keycloakUser->getAvatar(),
-            'kc_payload'  => json_encode($keycloakUser->user),
         ];
 
         // Validasi data yang diterima

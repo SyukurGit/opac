@@ -33,20 +33,14 @@
         }
     </style>
 </head>
-<body class="h-full font-sans antialiased bg-slate-50">
+<body class="h-full font-sans antialiased bg-white">
     <div x-data="{ sidebarOpen: true }" class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <aside
-            x-show="sidebarOpen"
-            x-transition:enter="transition ease-out duration-200 transform"
-            x-transition:enter-start="-translate-x-full opacity-0"
-            x-transition:enter-end="translate-x-0 opacity-100"
-            x-transition:leave="transition ease-in duration-200 transform"
-            x-transition:leave-start="translate-x-0 opacity-100"
-            x-transition:leave-end="-translate-x-full opacity-0"
-            class="w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col fixed md:relative h-full z-30"
-            x-cloak
-        >
+       <aside
+    class="w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col fixed md:relative h-full z-30 transform transition-all duration-300 ease-in-out"
+    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:-ml-64'"
+    x-cloak
+>
             <!-- Logo Header -->
             <div class="h-16 flex items-center px-6 border-b border-slate-200">
                 <div class="flex items-center space-x-2.5">

@@ -1,3 +1,17 @@
+/* File: resources/css/app.css */
+
+/* PAKSA HAPUS MARGIN DAN PADDING DARI BROWSER */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+/* Biarkan kode di bawah ini seperti apa adanya */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[x-cloak] {
+    display: none !important;
+}
