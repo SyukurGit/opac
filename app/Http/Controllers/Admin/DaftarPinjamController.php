@@ -36,7 +36,7 @@ class DaftarPinjamController extends Controller
         ];
 
         // Kirim data ke view
-        return view('admin.daftar-pinjam', compact('peminjaman'));
+        return view('admin.daftar-pinjam-detail', compact('peminjaman'));
     }
 
 }
