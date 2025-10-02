@@ -3,13 +3,13 @@
 @section('header', 'Dashboard')
 
 @section('content')
-    {{-- Ini adalah pembungkus utama yang akan memperbaiki layout --}}
+    {{-- SATU DIV PEMBUNGKUS UTAMA. Ini adalah kuncinya. --}}
     <div class="space-y-6">
 
-        {{-- Statistics Cards Grid --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {{-- Bagian Kartu Statistik (sekarang ada di dalam pembungkus) --}}
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             
-            {{-- Card: Total Users --}}
+            {{-- Card: Total Pengguna --}}
             <div class="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-300 transition-all duration-200 hover:shadow-sm">
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex-1 min-w-0">
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            {{-- Card: Active Fines --}}
+            {{-- Card: Denda Aktif --}}
             <div class="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-300 transition-all duration-200 hover:shadow-sm">
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex-1 min-w-0">
@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            {{-- Card: Books Borrowed --}}
+            {{-- Card: Buku Dipinjam --}}
             <div class="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-300 transition-all duration-200 hover:shadow-sm">
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex-1 min-w-0">
@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            {{-- Card: Today's Transactions --}}
+            {{-- Card: Hari Ini --}}
             <div class="bg-white p-5 rounded-lg border border-slate-200 hover:border-slate-300 transition-all duration-200 hover:shadow-sm">
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex-1 min-w-0">
@@ -94,10 +94,8 @@
             </div>
         </div>
 
-        {{-- Recent Activity Table --}}
+        {{-- Bagian Tabel Aktivitas (sekarang ada di dalam pembungkus) --}}
         <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
-            
-            {{-- Table Header --}}
             <div class="px-4 sm:px-6 py-4 border-b border-slate-200">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div class="flex-1 min-w-0">
@@ -110,7 +108,6 @@
                 </div>
             </div>
             
-            {{-- Table Content --}}
             <div class="overflow-x-auto">
                 <table class="w-full min-w-[640px]">
                     <thead>
@@ -122,7 +119,6 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        {{-- Rows here --}}
                         <tr class="hover:bg-slate-50 transition-colors duration-150">
                             <td class="py-3.5 px-4 sm:px-6"><span class="text-sm text-slate-600 whitespace-nowrap">10:23 AM</span></td>
                             <td class="py-3.5 px-4 sm:px-6"><div class="flex items-center space-x-3 min-w-0"><div class="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-medium">JD</span></div><span class="text-sm font-medium text-slate-900 truncate">John Doe</span></div></td>
