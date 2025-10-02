@@ -4,43 +4,41 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http; // Pastikan ini di-import
+
+// 1. Import CirculationController yang akan kita panggil
+use App\Http\Controllers\Api\V1\CirculationController;
 
 class DaftarPinjamController extends Controller
 {
-     public function index()
+    public function index(Request $request) // Tambahkan Request $request
     {
-        $peminjaman = []; // Inisialisasi sebagai array kosong
+        // 2. Buat instance baru dari API controller kita
+        $circulationApi = new CirculationController();
 
-        try {
-            $response = Http::get(url('/api/v1/peminjaman'));
+        // 3. Panggil langsung method 'index' nya
+        // Method 'index' di CirculationController mengembalikan JsonResponse,
+        // jadi kita perlu mengambil datanya.
+        $response = $circulationApi->index($request);
 
-            // Cek jika request berhasil (status code 2xx)
-            if ($response->successful()) {
-                // Ambil nilai dari key 'data', jika tidak ada, default ke array kosong
-                $peminjaman = $response->json('data', []);
-            }
-        } catch (\Exception $e) {
-            // Biarkan $peminjaman kosong jika koneksi ke API gagal
-        }
+        // 4. Ambil konten dari JsonResponse dan decode menjadi array
+        $peminjaman = json_decode($response->getContent(), true)['data'] ?? [];
 
+        // 5. Kirim data yang sudah bersih ke view
         return view('admin.daftar-pinjam', compact('peminjaman'));
     }
 
-    public function show(string $id)
+    public function show(Request $request, string $id) // Tambahkan Request $request
     {
-        $peminjaman = [
-            'id' => $id,
-            'member_id' => '230503072',
-            'member_name' => 'RISALUL YANTI',
-            'item_code' => '0041016TXT03',
-            'item_title' => 'Petunjuk Praktis Metode Penelitian Teknologi Informasi',
-            'due_date' => '2025-09-26',
-            'return_date' => '2025-09-29',
-            'delay' => '+3 days',
-            'billing' => 'Rp. 3,000',
-            'cash' => '3,000',
-        ];
+        $circulationApi = new CirculationController();
+        $response = $circulationApi->show($id); // Panggil method show dari API
+
+        // Ambil data dari JSON, default ke array kosong jika gagal
+        $peminjaman = json_decode($response->getContent(), true)['data'] ?? [];
+
+        // Jika data tidak ditemukan (kosong), tampilkan halaman 404
+        if (empty($peminjaman)) {
+            abort(404);
+        }
 
         return view('admin.daftar-pinjam-detail', compact('peminjaman'));
     }

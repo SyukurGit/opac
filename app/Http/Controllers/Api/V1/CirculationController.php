@@ -5,19 +5,17 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr; // Import class Arr
 
 class CirculationController extends Controller
 {
     /**
-     * Mengembalikan daftar data peminjaman contoh.
-     *
-     * @param Request $request
-     * @return JsonResponse
+     * Kumpulan data peminjaman contoh.
+     * @return array
      */
-    public function index(Request $request): JsonResponse
+    private function getPeminjamanData(): array
     {
-        // Data contoh (dummy)
-        $peminjaman = [
+        return [
             [
                 'id' => 1,
                 'nim' => '20011001',
@@ -38,23 +36,147 @@ class CirculationController extends Controller
                 'status' => 'Dipinjam',
                 'denda' => 0,
             ],
+
             [
                 'id' => 3,
                 'nim' => '20011003',
                 'nama_peminjam' => 'Citra Lestari',
-                'judul_buku' => 'Sejarah Nusantara Modern',
+                'judul_buku' => 'Sejarah Nusantara Modern1',
                 'tanggal_pinjam' => '2025-08-10',
                 'tanggal_kembali' => '2025-08-17',
                 'status' => 'Terlambat',
                 'denda' => 45000,
             ],
-        ];
 
-        // Mengembalikan data sebagai respons JSON
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data peminjaman berhasil diambil.',
-            'data' => $peminjaman,
-        ]);
+            [
+                'id' => 4,
+                'nim' => '20011003',
+                'nama_peminjam' => 'Citra Lestari',
+                'judul_buku' => 'Sejarah Nusantara Modern2',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+            [
+                'id' => 5,
+                'nim' => '20011003',
+                'nama_peminjam' => 'Citra Lestari',
+                'judul_buku' => 'Sejarah Nusantara Modern3',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+            [
+                'id' => 6,
+                'nim' => '20011003',
+                'nama_peminjam' => 'Citra Lestari',
+                'judul_buku' => 'Sejarah Nusantara Modern4',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+            [
+                'id' => 7,
+                'nim' => '20011003',
+                'nama_peminjam' => 'Citra Lestari',
+                'judul_buku' => 'Sejarah Nusantara Modern5',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+            [
+                'id' => 8,
+                'nim' => '20011003',
+                'nama_peminjam' => 'Citra Lestari',
+                'judul_buku' => 'Sejarah Nusantara Modern6',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+            [
+                'id' => 9,
+                'nim' => '20011003',
+                'nama_peminjam' => 'Citra Lestari',
+                'judul_buku' => 'Sejarah Nusantara Modern7',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+            [
+                'id' => 10,
+                'nim' => '22011003',
+                'nama_peminjam' => 'andika',
+                'judul_buku' => 'Berita 2025',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+            [
+                'id' => 11,
+                'nim' => '22011003',
+                'nama_peminjam' => 'andika',
+                'judul_buku' => 'Sejarah 1990',
+                'tanggal_pinjam' => '2025-08-10',
+                'tanggal_kembali' => '2025-08-17',
+                'status' => 'Terlambat',
+                'denda' => 45000,
+            ],
+
+
+
+
+
+
+
+        ];
+    }
+
+   public function index(Request $request): JsonResponse
+    {
+        // Ambil semua data peminjaman
+        $peminjaman = $this->getPeminjamanData();
+
+        // Cek apakah ada parameter 'search' di request
+        if ($request->has('search')) {
+            $searchKeyword = strtolower($request->input('search')); // ambil kata kunci & ubah ke huruf kecil
+
+            $peminjaman = array_filter($peminjaman, function ($item) use ($searchKeyword) {
+                // Cek apakah kata kunci ada di dalam nim atau judul buku (case-insensitive)
+                $nimMatch = str_contains(strtolower($item['nim']), $searchKeyword);
+                $judulMatch = str_contains(strtolower($item['judul_buku']), $searchKeyword);
+
+                return $nimMatch || $judulMatch;
+            });
+        }
+
+        return response()->json(['data' => array_values($peminjaman)]); // array_values untuk mereset index array
+    }
+    /**
+     * Mengembalikan detail satu data peminjaman.
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function show(string $id): JsonResponse
+    {
+        $peminjaman = $this->getPeminjamanData();
+
+        // Cari item yang id-nya cocok. firstWhere adalah helper Laravel yang sangat berguna.
+        $item = Arr::first($peminjaman, fn ($value) => $value['id'] == $id);
+
+        if ($item) {
+            // Jika item ditemukan, kembalikan datanya
+            return response()->json(['data' => $item]);
+        }
+
+        // Jika tidak ditemukan, kembalikan error 404
+        return response()->json(['message' => 'Data tidak ditemukan.'], 404);
     }
 }

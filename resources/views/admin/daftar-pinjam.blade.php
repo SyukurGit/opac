@@ -16,14 +16,20 @@
                 <span>entries</span>
             </div>
 
-            <div class="relative">
-                <input type="text" placeholder="Search..." class="w-64 pl-9 pr-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-slate-400 focus:border-slate-400 transition duration-150 ease-in-out text-sm">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-            </div>
+           <div class="mb-4">
+    <form action="{{ route('admin.daftar-pinjam') }}" method="GET" class="relative">
+        <label for="search" class="sr-only">Cari</label>
+        <input id="search" name="search" class="form-input w-full pl-9" type="search" placeholder="Cari berdasarkan NIM atau Judul Buku..." value="{{ request('search') }}">
+        <button class="absolute inset-0 right-auto" type="submit" aria-label="Cari">
+            <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 ml-3 mr-2" viewBox="0 0 16 16">
+                <path d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z"></path>
+                <path d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z"></path>
+            </svg>
+        </button>
+    </form>
+</div>
+
+
         </div>
     </div>
 
