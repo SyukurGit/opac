@@ -41,25 +41,55 @@
                     <th class="p-4 whitespace-nowrap"><div class="font-semibold text-center">Action</div></th>
                 </tr>
             </thead>
-            <tbody class="text-sm divide-y divide-slate-100">
-                {{-- Data statis sebagai contoh --}}
-                @for ($i = 1; $i <= 8; $i++)
-                <tr class="hover:bg-slate-50">
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $i }}</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left font-medium text-slate-800">230503072</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">0041016TXT03</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">2025-09-26</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">2025-09-29</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-red-500 font-medium">+3 days</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-red-500 font-medium">+3 days</div></td>
-                    <td class="p-4 whitespace-nowrap text-center">
-    <a href="{{ route('admin.daftar-pinjam-detail', ['id' => $i]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition duration-150 ease-in-out">
-        Detail
-    </a>
-</td>
-                </tr>
-                @endfor
-            </tbody>
+
+
+
+
+          <tbody class="text-sm divide-y divide-slate-100">
+    @forelse ($peminjaman as $item)
+    <tr class="hover:bg-slate-50">
+        {{-- Menggunakan $loop->iteration untuk nomor urut --}}
+        <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $loop->iteration }}</div></td>
+        <td class="p-4 whitespace-nowrap"><div class="text-left font-medium text-slate-800">{{ $item['nim'] }}</div></td>
+        <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item['judul_buku'] }}</div></td>
+        <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item['tanggal_pinjam'] }}</div></td>
+        <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item['tanggal_kembali'] }}</div></td>
+        <td class="p-4 whitespace-nowrap">
+            {{-- Menampilkan denda jika lebih dari 0 --}}
+            @if($item['denda'] > 0)
+                <div class="text-left text-red-500 font-medium">Rp. {{ number_format($item['denda'], 0, ',', '.') }}</div>
+            @else
+                <div class="text-left text-slate-700">-</div>
+            @endif
+        </td>
+        <td class="p-4 whitespace-nowrap">
+            {{-- Kondisi untuk status badge --}}
+            @if($item['status'] == 'Terlambat')
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-red-50 text-red-700 border border-red-200">{{ $item['status'] }}</span>
+            @else
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">{{ $item['status'] }}</span>
+            @endif
+        </td>
+        <td class="p-4 whitespace-nowrap text-center">
+            <a href="{{ route('admin.daftar-pinjam-detail', ['id' => $item['id']]) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition duration-150 ease-in-out">
+                Detail
+            </a>
+        </td>
+    </tr>
+    @empty
+    {{-- Pesan jika tidak ada data --}}
+    <tr>
+        <td colspan="8" class="p-4 text-center text-slate-500">
+            Tidak ada data peminjaman untuk ditampilkan.
+        </td>
+    </tr>
+    @endforelse
+</tbody>
+
+
+
+
+
         </table>
     </div>
 
