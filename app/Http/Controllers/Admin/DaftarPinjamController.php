@@ -4,39 +4,30 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http; // <-- Tambahkan ini
+
 
 class DaftarPinjamController extends Controller
 {
-    /**
-     * Menampilkan halaman daftar peminjaman.
-     */
     public function index()
     {
-        // Saat ini kita hanya menampilkan view.
-        // Nanti, logika untuk mengambil data dari API akan ditambahkan di sini.
-        return view('admin.daftar-pinjam');
+        // Panggil API contoh yang sudah kita buat
+        $response = Http::get(url('/api/v1/peminjaman'));
+
+        // Ambil data dari respons JSON
+        $peminjaman = $response->json('data');
+
+        // Jika API gagal atau data tidak ditemukan, siapkan array kosong
+        if ($response->failed() || !$peminjaman) {
+            $peminjaman = [];
+        }
+
+        return view('admin.daftar-pinjam', compact('peminjaman'));
     }
 
-
-
-     public function show($id)
+    public function show(string $id)
     {
-        // Data statis sebagai contoh, nanti ini akan diambil dari API
-        $peminjaman = [
-            'id' => $id,
-            'member_id' => '230503072',
-            'member_name' => 'RISALUL YANTI',
-            'item_code' => '0041016TXT03',
-            'item_title' => 'Petunjuk Praktis Metode Penelitian Teknologi Informasi',
-            'due_date' => '2025-09-26',
-            'return_date' => '2025-09-29',
-            'delay' => '+3 days',
-            'billing' => 'Rp. 3,000',
-            'cash' => '3,000',
-        ];
-
-        // Kirim data ke view
-        return view('admin.daftar-pinjam-detail', compact('peminjaman'));
+        // Logika untuk menampilkan detail (bisa dikembangkan nanti)
+        return view('admin.daftar-pinjam-detail');
     }
-
 }

@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// Cukup import controller satu kali saja
+use App\Http\Controllers\Api\V1\CirculationController;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\KeycloakController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DaftarPinjamController; // <-- Tambahkan ini
@@ -34,11 +35,15 @@ Route::get('/debug-session', function () {
 Route::get('/login', [KeycloakController::class, 'redirect'])->name('login');
 Route::get('/auth/callback', [KeycloakController::class, 'callback']);
 Route::get('/logout', [KeycloakController::class, 'logout'])->name('logout');
+Route::get('/v1/peminjaman', [CirculationController::class, 'index']);
+
 
 // Grup rute untuk admin panel
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/daftar-pinjam', [DaftarPinjamController::class, 'index'])->name('admin.daftar-pinjam');
+
+    //api
         Route::get('/daftar-pinjam-detail/{id}', [DaftarPinjamController::class, 'show'])->name('admin.daftar-pinjam-detail');
 
 
