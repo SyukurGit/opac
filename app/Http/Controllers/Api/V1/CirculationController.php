@@ -33,8 +33,8 @@ class CirculationController extends Controller
                 'judul_buku' => 'Fisika Kuantum untuk Pemula',
                 'tanggal_pinjam' => '2025-09-20',
                 'tanggal_kembali' => '2025-09-27',
-                'status' => 'Dipinjam',
-                'denda' => 0,
+                'status' => 'Terlambat',
+                'denda' => 10000,
             ],
 
             [
@@ -106,7 +106,7 @@ class CirculationController extends Controller
                 'tanggal_pinjam' => '2025-08-10',
                 'tanggal_kembali' => '2025-08-17',
                 'status' => 'Terlambat',
-                'denda' => 45000,
+                'denda' => 15000,
             ],
             [
                 'id' => 10,
@@ -116,7 +116,7 @@ class CirculationController extends Controller
                 'tanggal_pinjam' => '2025-08-10',
                 'tanggal_kembali' => '2025-08-17',
                 'status' => 'Terlambat',
-                'denda' => 45000,
+                'denda' => 35000,
             ],
             [
                 'id' => 11,
@@ -126,7 +126,7 @@ class CirculationController extends Controller
                 'tanggal_pinjam' => '2025-08-10',
                 'tanggal_kembali' => '2025-08-17',
                 'status' => 'Terlambat',
-                'denda' => 45000,
+                'denda' => 15000,
             ],
 
 
