@@ -8,24 +8,20 @@ use Illuminate\Support\Facades\Http; // Pastikan ini di-import
 
 class DaftarPinjamController extends Controller
 {
-    public function index()
+     public function index()
     {
         $peminjaman = []; // Inisialisasi sebagai array kosong
 
-        // Coba panggil API
         try {
-            // Gunakan url() untuk memastikan URL yang dipanggil benar
             $response = Http::get(url('/api/v1/peminjaman'));
 
-            // Cek jika request berhasil dan ambil data dari JSON
+            // Cek jika request berhasil (status code 2xx)
             if ($response->successful()) {
-                // Ambil data dari key 'data' di dalam JSON
-                $peminjaman = $response->json('data');
+                // Ambil nilai dari key 'data', jika tidak ada, default ke array kosong
+                $peminjaman = $response->json('data', []);
             }
         } catch (\Exception $e) {
-            // Jika terjadi error saat koneksi ke API, catat error (opsional)
-            // dan biarkan $peminjaman tetap kosong agar halaman tidak error.
-            // Log::error('Gagal mengambil data dari API: ' . $e->getMessage());
+            // Biarkan $peminjaman kosong jika koneksi ke API gagal
         }
 
         return view('admin.daftar-pinjam', compact('peminjaman'));
