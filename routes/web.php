@@ -42,8 +42,6 @@ Route::get('/v1/peminjaman', [CirculationController::class, 'index']);
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/daftar-pinjam', [DaftarPinjamController::class, 'index'])->name('admin.daftar-pinjam');
-
-    //api
         Route::get('/daftar-pinjam-detail/{id}', [DaftarPinjamController::class, 'show'])->name('admin.daftar-pinjam-detail');
 
 
