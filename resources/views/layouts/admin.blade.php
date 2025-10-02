@@ -69,7 +69,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 6v12m0-12a2 2 0 012-2h6v16h-6a2 2 0 00-2-2m0-12H6a2 2 0 00-2 2v12h8"/>
     </svg>
-    <span>Daftar Pinjam</span>
+    <span>Daftar Keterlambatan</span>
 </a>
 
 
