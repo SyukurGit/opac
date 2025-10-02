@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\CirculationController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\KeycloakController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -35,7 +34,6 @@ Route::get('/debug-session', function () {
 Route::get('/login', [KeycloakController::class, 'redirect'])->name('login');
 Route::get('/auth/callback', [KeycloakController::class, 'callback']);
 Route::get('/logout', [KeycloakController::class, 'logout'])->name('logout');
-Route::get('/v1/peminjaman', [CirculationController::class, 'index']);
 
 
 // Grup rute untuk admin panel
