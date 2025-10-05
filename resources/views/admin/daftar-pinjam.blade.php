@@ -62,26 +62,27 @@
             <tbody class="text-sm divide-y divide-slate-100">
                 @forelse ($peminjaman as $item)
                 <tr class="hover:bg-slate-50 transition-opacity duration-300"
-                    :class="{ 'opacity-50': selectedNim !== null && selectedNim !== '{{ $item['nim'] }}' }">
+                    :class="{ 'opacity-50': selectedNim !== null && selectedNim !== '{{ $item->nim }}' }">
                     <td class="p-4 whitespace-nowrap w-px">
                         <div class="flex items-center">
                             <label class="inline-flex">
                                 <input class="form-checkbox" type="checkbox"
-                                    :checked="selectedItems.includes({{ $item['id'] }})"
+                                    :checked="selectedItems.includes({{ $item->id }})"
                                     @click="toggleCheckbox($event, {{ json_encode($item) }})"
-                                    :disabled="selectedNim !== null && selectedNim !== '{{ $item['nim'] }}'">
+                                    :disabled="selectedNim !== null && selectedNim !== '{{ $item->nim }}'">
                             </label>
                         </div>
                     </td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left font-medium text-slate-800">{{ $item['nim'] }}</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item['nama_peminjam'] }}</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700 max-w-xs truncate">{{ $item['judul_buku'] }}</div></td>
-                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item['delay'] }}</div></td>
+                    {{-- PERBAIKAN DI BAWAH INI: Menggunakan $item->properti bukan $item['properti'] --}}
+                    <td class="p-4 whitespace-nowrap"><div class="text-left font-medium text-slate-800">{{ $item->nim }}</div></td>
+                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item->nama_peminjam }}</div></td>
+                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700 max-w-xs truncate">{{ $item->judul_buku }}</div></td>
+                    <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item->delay }}</div></td>
                     <td class="p-4 whitespace-nowrap">
-                        <div class="text-left text-red-500 font-medium">Rp. {{ number_format($item['denda'], 0, ',', '.') }}</div>
+                        <div class="text-left text-red-500 font-medium">Rp. {{ number_format($item->denda, 0, ',', '.') }}</div>
                     </td>
                     <td class="p-4 whitespace-nowrap text-center">
-                        <a href="{{ route('admin.daftar-pinjam-detail', ['id' => $item['id']]) }}"
+                        <a href="{{ route('admin.daftar-pinjam-detail', ['id' => $item->id]) }}"
                             class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition duration-150 ease-in-out">
                             Detail
                         </a>
@@ -93,7 +94,7 @@
                         Tidak ada data keterlambatan untuk ditampilkan.
                     </td>
                 </tr>
-                @end ઓફ
+                @endforelse
             </tbody>
         </table>
     </div>

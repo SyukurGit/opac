@@ -3,51 +3,52 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Peminjaman; // <-- IMPORT MODEL PEMINJAMAN
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http; // Pastikan Http facade di-import
 
 class DaftarPinjamController extends Controller
 {
+    /**
+     * Menampilkan daftar data peminjaman yang diambil langsung dari database.
+     */
     public function index(Request $request)
     {
-        $queryParams = [];
-        if ($request->has('search')) {
-            $queryParams['search'] = $request->input('search');
+        // Mulai query builder langsung dari model
+        $query = Peminjaman::query();
+
+        // Terapkan filter pencarian jika ada
+        if ($request->has('search') && $request->input('search') != '') {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nim', 'like', '%' . $search . '%')
+                  ->orWhere('nama_peminjam', 'like', '%' . $search . '%')
+                  ->orWhere('judul_buku', 'like', '%' . $search . '%');
+            });
         }
 
-        $peminjaman = []; // Default ke array kosong
-
-        try {
-            // Gunakan config('app.url') agar lebih dinamis
-            $response = Http::get(config('app.url') . '/api/v1/peminjaman', $queryParams);
-
-            if ($response->successful()) {
-                $peminjaman = $response->json(); // Langsung konversi ke array
-            } else {
-                // Jika API gagal, setidaknya halaman tidak akan error
-                // Anda bisa menambahkan logging atau notifikasi di sini
-                // Log::error('Gagal mengambil data dari API: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            // Jika ada masalah koneksi ke API
-            // Log::error('Tidak dapat terhubung ke API: ' . $e->getMessage());
-        }
-
+        // Ambil data terbaru dan kirim ke view
+        $peminjaman = $query->latest()->get();
 
         return view('admin.daftar-pinjam', compact('peminjaman'));
     }
 
-    // Metode detail dan checkout tidak perlu kita ubah
+    /**
+     * Menampilkan detail peminjaman.
+     */
     public function detail($id)
     {
-        // Logika ini juga bisa mengambil dari API
-        return view('admin.daftar-pinjam-detail', ['id' => $id]);
+        // Ambil data detail juga langsung dari model
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        return view('admin.daftar-pinjam-detail', compact('peminjaman'));
     }
 
+    /**
+     * Halaman checkout (tidak lagi digunakan dalam alur utama).
+     */
     public function checkout(Request $request)
     {
-        // Halaman ini mungkin tidak akan terpakai lagi,
-        // tapi kita biarkan saja untuk saat ini.
+        // Fungsi ini bisa dibiarkan atau dihapus jika tidak diperlukan lagi
         $items = $request->query('items', []);
         return view('admin.checkout', ['items' => $items]);
     }
