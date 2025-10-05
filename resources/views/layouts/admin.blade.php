@@ -33,27 +33,32 @@
         }
     </style>
 </head>
-<body class="h-full font-sans antialiased bg-white">
+<body class="h-full font-sans antialiased bg-gray-50">
     <div x-data="{ sidebarOpen: true }" class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-       <aside
-    class="w-64 bg-white border-r border-slate-200 flex-shrink-0 flex flex-col fixed md:relative h-full z-30 transform transition-all duration-300 ease-in-out"
-    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:-ml-64'"
-    x-cloak
->
+        <aside
+            class="w-64 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col fixed md:relative h-full z-30 transform transition-all duration-300 ease-in-out"
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:-ml-64'"
+            x-cloak
+        >
             <!-- Logo Header -->
-            <div class="h-16 flex items-center px-6 border-b border-slate-200">
+            <div class="h-16 flex items-center px-6 border-b border-gray-200">
                 <div class="flex items-center space-x-2.5">
-                    <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                        <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    <div class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
                     </div>
-                    <h1 class="text-lg font-semibold text-slate-900">--OPAC--</h1>
+                    <h1 class="text-lg font-semibold text-gray-900">--OPAC--</h1>
                 </div>
             </div>
 
             <!-- Navigation -->
+          
+
+
+
+                <!-- Navigation -->
             <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto custom-scrollbar">
                 <a href="{{ route('admin.dashboard') }}"
                    class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('admin.dashboard') ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
@@ -63,41 +68,49 @@
                     <span>Dashboard</span>
                 </a>
 
-               <a href="{{ route('admin.daftar-pinjam') }}"
-   class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('admin.daftar-pinjam*') ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' }}">
-    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 6v12m0-12a2 2 0 012-2h6v16h-6a2 2 0 00-2-2m0-12H6a2 2 0 00-2 2v12h8"/>
-    </svg>
-    <span>Daftar Pinjam</span>
-</a>
-
+                <a href="{{ route('admin.daftar-pinjam') }}"
+                   class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 {{ request()->routeIs('admin.daftar-pinjam*') ? 'bg-gray-900 text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 6v12m0-12a2 2 0 012-2h6v16h-6a2 2 0 00-2-2m0-12H6a2 2 0 00-2 2v12h8"/>
+                    </svg>
+                    <span>Daftar Denda</span>
+                </a>
 
                 <a href="#"
-   class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-all duration-150">
-    <!-- Ikon Admin -->
-    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
-                 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 
-                 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-    </svg>
-    <span>Admin</span>
-</a>
+                   class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 
+                          hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 17v-2h6v2H9zm-3 4h12a2 2 0 002-2V7l-5-5H6a2 2 0 00-2 2v15a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Laporan</span>
+                </a>
 
+                <a href="#"
+                   class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 
+                          hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 
+                                 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 
+                                 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span>Admin </span>
+                </a>
             </nav>
         </aside>
 
         <!-- Main Content Area -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Navigation -->
-            <header class="bg-white border-b border-slate-200 z-20">
+            <header class="bg-white border-b border-gray-200 z-20">
                 <div class="px-4 lg:px-6">
                     <div class="flex items-center justify-between h-16">
                         <!-- Toggle Sidebar Button -->
                         <button 
                             @click="sidebarOpen = !sidebarOpen" 
-                            class="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all duration-150">
+                            class="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200">
                             <span class="sr-only">Toggle sidebar</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -108,19 +121,19 @@
                         <div class="flex items-center space-x-3">
                             <!-- User Info -->
                             <div class="hidden sm:flex items-center space-x-2.5">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center">
+                                <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center">
                                     <span class="text-white font-medium text-xs">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
                                 </div>
                                 <div class="text-left">
-                                    <p class="text-sm font-medium text-slate-900">{{ Auth::user()->name }}</p>
-                                    <p class="text-xs text-slate-500">Administrator</p>
+                                    <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                                    <p class="text-xs text-gray-500">Administrator</p>
                                 </div>
                             </div>
 
                             <!-- Logout Button -->
                             <a href="{{ route('logout') }}" 
                                title="Logout" 
-                               class="group flex items-center space-x-2 px-3 py-2 rounded-lg text-slate-700 hover:text-red-600 hover:bg-red-50 border border-slate-200 hover:border-red-200 transition-all duration-150">
+                               class="group flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-700 hover:text-red-600 hover:bg-red-50 border border-gray-200 hover:border-red-200 transition-colors duration-200">
                                 <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                                 </svg>
@@ -132,16 +145,16 @@
             </header>
 
             <!-- Main Content -->
-           <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100">
-    <div class="container mx-auto px-6 py-8">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-semibold text-slate-900">@yield('header')</h1>
-        </div>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
+                <div class="container mx-auto px-6 py-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-semibold text-gray-900">@yield('header')</h1>
+                    </div>
 
-        @yield('content')
-        
-    </div>
-</main>
+                    @yield('content')
+                    
+                </div>
+            </main>
         </div>
     </div>
 </body>

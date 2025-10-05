@@ -30,8 +30,8 @@
                     <div>
                         <h2 class="font-semibold text-slate-800">Informasi Peminjaman</h2>
                         <div class="mt-2 text-sm text-slate-600">
-                            <p><span class="font-medium">Tanggal Pinjam:</span> {{ \Carbon\Carbon::parse($peminjaman['tanggal_pinjam'])->isoFormat('D MMMM YYYY') }}</p>
-                            <p><span class="font-medium">Jatuh Tempo:</span> {{ \Carbon\Carbon::parse($peminjaman['tanggal_kembali'])->isoFormat('D MMMM YYYY') }}</p>
+                            <p><span class="font-medium">Code buku:</span> {{$peminjaman['item_book']}}</p>
+                            <p><span class="font-medium">Delay:</span> {{ ($peminjaman['Delay'])}}</p>
                             <p><span class="font-medium">Status:</span>
                                 @if($peminjaman['status'] == 'Terlambat')
                                     <span class="font-bold text-red-600">{{ $peminjaman['status'] }}</span>
@@ -51,11 +51,19 @@
                 </div>
 
                 <div class="flex justify-end mt-6">
-                    <a href="{{ route('admin.daftar-pinjam') }}" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                        <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16"><path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z"></path></svg>
-                        <span class="ml-2">Kembali ke Daftar</span>
-                    </a>
-                </div>
+    <a href="{{ route('admin.daftar-pinjam') }}"
+       class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-500 text-white text-sm font-medium shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition duration-200">
+        <svg class="w-4 h-4 opacity-70" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-5-5a1 
+                 1 0 010-1.414l5-5a1 1 0 111.414 
+                 1.414L4.414 9H18a1 1 0 110 
+                 2H4.414l3.293 3.293a1 1 0 010 
+                 1.414z" clip-rule="evenodd"/>
+        </svg>
+        <span class="ml-2">Kembali ke Daftar</span>
+    </a>
+</div>
+
             </div>
         </div>
     </div>

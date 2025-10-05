@@ -42,4 +42,35 @@ class DaftarPinjamController extends Controller
 
         return view('admin.daftar-pinjam-detail', compact('peminjaman'));
     }
+
+
+
+    public function showCheckoutForm(Request $request)
+{
+    // Validasi, pastikan 'selected_ids' ada dan berupa array
+    $request->validate([
+        'selected_ids' => 'required|array|min:1',
+    ]);
+
+    $selectedIds = $request->input('selected_ids');
+
+    $circulationApi = new CirculationController();
+    $items = [];
+    $totalDenda = 0;
+
+    foreach ($selectedIds as $id) {
+        $response = $circulationApi->show($id);
+        $itemData = json_decode($response->getContent(), true)['data'] ?? null;
+        if ($itemData) {
+            $items[] = $itemData;
+            $totalDenda += $itemData['denda'];
+        }
+    }
+
+    if (empty($items)) {
+        return redirect()->route('admin.daftar-pinjam')->with('error', 'Item yang dipilih tidak ditemukan.');
+    }
+
+    return view('admin.checkout', compact('items', 'totalDenda'));
+}
 }
