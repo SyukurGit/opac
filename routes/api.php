@@ -3,7 +3,17 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CirculationController;
+use App\Http\Controllers\Api\V1\PembayaranController; // <-- IMPORT CONTROLLER BARU
 
-// Definisikan rute API kita di sini
-Route::get('/v1/peminjaman', [CirculationController::class, 'index']);
-Route::get('/v1/peminjaman/{id}', [CirculationController::class, 'show']);
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('v1')->group(function () {
+    Route::apiResource('peminjaman', CirculationController::class)->only(['index', 'show']);
+
+    // RUTE BARU UNTUK PROSES PEMBAYARAN
+    Route::post('pembayaran', [PembayaranController::class, 'processPayment']);
+});

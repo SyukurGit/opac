@@ -3,70 +3,45 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Models\Peminjaman; // <-- IMPORT MODEL PEMINJAMAN
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class CirculationController extends Controller
 {
-    private function getPeminjamanData(): array
+    /**
+     * Menampilkan daftar data peminjaman yang terlambat.
+     */
+    public function index(Request $request)
     {
-        // Data contoh dengan beberapa NIM yang sama dan status 'Terlambat'
-       return [
-    [
-        'id' => 1, 'nim' => '20011001', 'nama_peminjam' => 'Jawi',
-        'judul_buku' => 'Dasar-Dasar Pemrograman Laravel', 'item_book' => '0003975TXT12',
-        'Delay' => '+1 days', 'status' => 'Terlambat', 'denda' => 14000,
-    ],
+        $query = Peminjaman::query();
 
-    [
-        'id' => 2, 'nim' => '20011021', 'nama_peminjam' => 'Budi Santoso',
-        'judul_buku' => 'Dasar-Dasar Pemrograman Laravel', 'item_book' => '0005975TXT02',
-        'Delay' => '+2 days', 'status' => 'Terlambat', 'denda' => 10000,
-    ],
-
-     [
-        'id' => 3, 'nim' => '20011021', 'nama_peminjam' => 'Budi Santoso',
-        'judul_buku' => 'Dasar-Dasar Pemrograman Laravel 2 ', 'item_book' => '0005975TXT02',
-        'Delay' => '+4 days', 'status' => 'Terlambat', 'denda' => 30000,
-    ],
-
-   
-  
-];
-
-    }
-
-    public function index(Request $request): JsonResponse
-    {
-        $peminjaman = $this->getPeminjamanData();
-
-        // 1. Filter HANYA yang statusnya 'Terlambat'
-        $terlambat = array_filter($peminjaman, fn ($item) => $item['status'] === 'Terlambat');
-
-        // 2. Terapkan pencarian jika ada
+        // Cek jika ada parameter pencarian 'search'
         if ($request->has('search')) {
-            $searchKeyword = strtolower($request->input('search'));
-
-            $terlambat = array_filter($terlambat, function ($item) use ($searchKeyword) {
-                $nimMatch = str_contains(strtolower($item['nim']), $searchKeyword);
-                $judulMatch = str_contains(strtolower($item['judul_buku']), $searchKeyword);
-                return $nimMatch || $judulMatch;
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nim', 'like', '%' . $search . '%')
+                  ->orWhere('judul_buku', 'like', '%' . $search . '%')
+                  ->orWhere('nama_peminjam', 'like', '%' . $search . '%');
             });
         }
 
-        return response()->json(['data' => array_values($terlambat)]);
+        $peminjaman = $query->latest()->get(); // Ambil data terbaru
+
+        return response()->json($peminjaman);
     }
 
-    public function show(string $id): JsonResponse
+
+    /**
+     * Menampilkan detail satu data peminjaman.
+     */
+    public function show(string $id)
     {
-        $peminjaman = $this->getPeminjamanData();
-        $item = Arr::first($peminjaman, fn ($value) => $value['id'] == $id);
+        // Cari data berdasarkan ID, jika tidak ketemu akan otomatis error 404
+        $peminjaman = Peminjaman::findOrFail($id);
 
-        if ($item) {
-            return response()->json(['data' => $item]);
-        }
-
-        return response()->json(['message' => 'Data tidak ditemukan.'], 404);
+        return response()->json($peminjaman);
     }
+
+    // Metode getPeminjamanData() dan yang lainnya (store, update, destroy) kita hapus
+    // karena sudah tidak relevan atau tidak digunakan.
 }
