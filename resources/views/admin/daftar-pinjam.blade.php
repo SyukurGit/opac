@@ -13,28 +13,22 @@
         <div class="px-5 py-4 border-b border-slate-200">
             <div class="flex items-center justify-between">
                 {{-- Search Form (Tidak ada perubahan) --}}
-                <div class="bg-white rounded-lg border border-slate-200 px-5 py-4 mb-6">
-    <div class="flex items-center justify-between">
-        {{-- Search Form (DIPISAHKAN DARI FORM CHECKOUT) --}}
-        <div>
-            <form action="{{ route('admin.daftar-pinjam') }}" method="GET" class="relative">
-                <label for="search" class="sr-only">Cari</label>
-                {{-- Kita tambahkan nama kolom spesifik yang ingin dicari --}}
-                <input id="search" name="search"
-                    class="form-input w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 bg-slate-50 text-slate-900"
-                    type="search" placeholder="Cari NIM atau Judul Buku..." value="{{ request('search') }}">
-                <button class="absolute inset-0 right-auto" type="submit" aria-label="Cari">
-                    <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 ml-3 mr-2" viewBox="0 0 16 16">
-                        <path
-                            d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
-                        <path
-                            d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
-                    </svg>
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
+                <div>
+                    <form action="{{ route('admin.daftar-pinjam') }}" method="GET" class="relative">
+                        <label for="search" class="sr-only">Cari</label>
+                        <input id="search" name="search"
+                            class="form-input w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 bg-slate-50 text-slate-900"
+                            type="search" placeholder="Cari NIM, Nama, atau Judul..." value="{{ request('search') }}">
+                        <button class="absolute inset-0 right-auto" type="submit" aria-label="Cari">
+                            <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 ml-3 mr-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
+                                <path
+                                    d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
 
                 {{-- Tombol Checkout & Total Denda --}}
                 <div class="flex items-center space-x-4">
@@ -118,7 +112,8 @@
 {{-- Paginasi (jika ada) --}}
 @if ($peminjaman->hasPages())
     <div class="px-5 py-4">
-        {{ $peminjaman->links() }}
+        {{-- Penting: tambahkan appends(request()->query()) agar filter pencarian tidak hilang saat pindah halaman --}}
+        {{ $peminjaman->appends(request()->query())->links() }}
     </div>
 @endif
 
