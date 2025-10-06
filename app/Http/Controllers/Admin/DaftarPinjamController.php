@@ -44,13 +44,32 @@ public function show($id)
         return view('admin.daftar-pinjam-detail', compact('peminjaman'));
     }
 
-    /**
-     * Halaman checkout (tidak lagi digunakan dalam alur utama).
-     */
     public function checkout(Request $request)
     {
-        // Fungsi ini bisa dibiarkan atau dihapus jika tidak diperlukan lagi
-        $items = $request->query('items', []);
-        return view('admin.checkout', ['items' => $items]);
+        // 1. Validasi input: pastikan 'items' ada dan tidak kosong.
+        $request->validate([
+            'items' => 'required|string',
+        ]);
+
+        // 2. Ambil string ID dari query parameter dan ubah menjadi array.
+        $itemIds = explode(',', $request->query('items'));
+
+        // 3. Ambil data lengkap peminjaman dari database berdasarkan ID yang dipilih.
+        // Kita juga pastikan hanya mengambil data yang ID-nya valid.
+        $peminjamanItems = Peminjaman::whereIn('id', $itemIds)->get();
+
+        // 4. Jika karena suatu alasan tidak ada item yang ditemukan, kembali dengan error.
+        if ($peminjamanItems->isEmpty()) {
+            return redirect()->route('admin.daftar-pinjam')->with('error', 'Item yang dipilih tidak valid.');
+        }
+
+        // 5. Hitung total denda dari item yang ditemukan.
+        $totalDenda = $peminjamanItems->sum('denda');
+
+        // 6. Kirim data item dan total denda ke view checkout.
+        return view('admin.checkout', [
+            'items' => $peminjamanItems,
+            'totalDenda' => $totalDenda,
+        ]);
     }
 }

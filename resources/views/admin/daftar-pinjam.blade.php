@@ -32,16 +32,18 @@
                     <p class="text-sm text-slate-500">Total Denda Terpilih</p>
                     <p class="text-xl font-bold text-slate-800" x-text="`Rp ${totalDenda.toLocaleString('id-ID')}`"></p>
                 </div>
-                <form x-on:submit.prevent="processPayment" class="w-full">
-                    <button type="submit" x-bind:disabled="selectedItems.length === 0"
-                        x-bind:class="{
-                            'bg-gray-400 cursor-not-allowed': selectedItems.length === 0,
-                            'bg-blue-600 hover:bg-blue-700': selectedItems.length > 0
-                        }"
-                        class="px-6 py-3 text-base font-semibold text-white rounded-lg transition-colors duration-300 whitespace-nowrap">
-                        Bayar Semua
-                    </button>
-                </form>
+               <div>
+    <a href="#"
+        x-bind:href="selectedItems.length > 0 ? '{{ route('admin.checkout') }}?items=' + selectedItems.join(',') : '#'"
+        x-on:click="if(selectedItems.length === 0) { event.preventDefault(); alert('Pilih item terlebih dahulu!'); }"
+        x-bind:class="{
+            'bg-gray-400 cursor-not-allowed': selectedItems.length === 0,
+            'bg-blue-600 hover:bg-blue-700': selectedItems.length > 0
+        }"
+        class="inline-block px-6 py-3 text-base font-semibold text-white rounded-lg transition-colors duration-300 whitespace-nowrap">
+        Bayar Semua
+    </a>
+</div>
             </div>
         </div>
     </div>
