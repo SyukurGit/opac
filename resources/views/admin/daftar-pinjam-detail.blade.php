@@ -5,11 +5,19 @@
 @section('content')
 <div class="bg-white rounded-lg border border-slate-200 p-6">
     <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-slate-800">Detail Peminjaman Terlambat</h2>
-        <a href="{{ route('admin.daftar-pinjam') }}" class="text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out">
-            &larr; Kembali ke Daftar Denda
-        </a>
-    </div>
+    <h2 class="text-2xl font-bold text-slate-800">Detail Peminjaman Terlambat</h2>
+    <a href="{{ route('admin.daftar-pinjam') }}"
+       class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white font-medium shadow-sm
+              hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
+              transition-all duration-200">
+        <!-- Ikon panah kembali -->
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Kembali ke Daftar Denda
+    </a>
+</div>
+
 
     {{-- Data sekarang diambil dari variabel $peminjaman yang dikirim Controller --}}
     <div class="space-y-4">
@@ -60,15 +68,15 @@
         </div>
 
         <div class="border-t pt-6 mt-6 text-center">
-            <p class="text-slate-600 text-lg">Total Denda yang Harus Dibayar:</p>
+            <p class="text-slate-600 text-lg">Denda yang Harus Dibayar:</p>
             <p class="text-4xl font-extrabold text-red-600 my-2">
                 Rp {{ number_format($peminjaman->denda, 0, ',', '.') }}
             </p>
             <div class="mt-6">
                 {{-- Tombol ini bisa dihubungkan ke API pembayaran untuk satu item nanti --}}
-                <button class="w-full max-w-xs bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">
+                {{-- <button class="w-full max-w-xs bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">
                     Proses Pembayaran
-                </button>
+                </button> --}}
             </div>
         </div>
     </div>
