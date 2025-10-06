@@ -35,7 +35,8 @@ class DaftarPinjamController extends Controller
     /**
      * Menampilkan detail peminjaman.
      */
-    public function detail($id)
+public function show($id)
+    
     {
         // Ambil data detail juga langsung dari model
         $peminjaman = Peminjaman::findOrFail($id);

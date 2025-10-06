@@ -18,6 +18,7 @@
             <div class="space-y-3">
                 <div class="flex justify-between items-center border-b pb-2">
                     <span class="text-slate-500 font-medium">NIM</span>
+                    {{-- PERBAIKAN: Menggunakan sintaks objek -> --}}
                     <span class="text-slate-800 font-bold text-lg">{{ $peminjaman->nim }}</span>
                 </div>
                 <div class="flex justify-between items-center border-b pb-2">
@@ -34,6 +35,7 @@
             <div class="space-y-3">
                 <div class="flex justify-between items-center border-b pb-2">
                     <span class="text-slate-500 font-medium">Tanggal Tercatat</span>
+                     {{-- Kita gunakan created_at karena ini yang ada di database --}}
                     <span class="text-slate-800">{{ $peminjaman->created_at->format('d F Y') }}</span>
                 </div>
                  <div class="flex justify-between items-center border-b pb-2">
@@ -63,6 +65,7 @@
                 Rp {{ number_format($peminjaman->denda, 0, ',', '.') }}
             </p>
             <div class="mt-6">
+                {{-- Tombol ini bisa dihubungkan ke API pembayaran untuk satu item nanti --}}
                 <button class="w-full max-w-xs bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">
                     Proses Pembayaran
                 </button>
