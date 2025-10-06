@@ -46,7 +46,7 @@
                 'bg-blue-600 hover:bg-blue-700': selectedItems.length > 0
             }"
             class="inline-block px-6 py-3 text-base font-semibold text-white rounded-lg transition-colors duration-300 whitespace-nowrap">
-            Bayar Semua
+            Checkout
         </button>
     </form>
 </div>
