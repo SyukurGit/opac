@@ -4,12 +4,7 @@
 
 @section('content')
 
-{{-- Form tersembunyi untuk proses checkout --}}
-<form x-ref="checkoutForm" action="{{ route('admin.checkout') }}" method="POST" class="hidden">
-    @csrf
-    <input type="hidden" name="items" x-model="JSON.stringify(selectedItems)">
-</form>
-
+{{-- Komponen Alpine.js untuk mengelola state halaman --}}
 <div class="bg-white rounded-lg border border-slate-200" x-data="peminjamanComponent()">
     <div class="px-5 py-4 border-b border-slate-200">
         <div class="flex items-center justify-between">
@@ -22,8 +17,10 @@
                         type="search" placeholder="Cari NIM, Nama, atau Judul..." value="{{ request('search') }}">
                     <button class="absolute inset-0 right-auto" type="submit" aria-label="Cari">
                         <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 ml-3 mr-2" viewBox="0 0 16 16">
-                            <path d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
-                            <path d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
+                            <path
+                                d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
+                            <path
+                                d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
                         </svg>
                     </button>
                 </form>
@@ -36,6 +33,7 @@
                     <p class="text-xl font-bold text-slate-800" x-text="`Rp ${totalDenda.toLocaleString('id-ID')}`"></p>
                 </div>
                 
+                {{-- INI BAGIAN YANG DIPERBAIKI --}}
                 <button @click="checkout()"
                     :disabled="selectedItems.length === 0"
                     :class="{
@@ -49,10 +47,8 @@
         </div>
     </div>
 
-    {{-- Tabel Data --}}
     <div class="overflow-x-auto">
         <table class="w-full table-auto">
-            {{-- (Isi tabel thead dan tbody sama seperti sebelumnya, tidak perlu diubah) --}}
             <thead class="text-xs font-semibold uppercase text-slate-500 bg-slate-50">
                 <tr>
                     <th class="p-4 w-px"></th>
@@ -105,47 +101,58 @@
     </div>
 </div>
 
+{{-- SCRIPT ALPINE.JS YANG DIPERBAIKI --}}
+{{-- SCRIPT ALPINE.JS YANG DIPERBAIKI --}}
 <script>
     function peminjamanComponent() {
         return {
+            // PERBAIKAN: Hapus .items() dari sini. @json($peminjaman) sudah cukup.
             peminjamanData: @json($peminjaman), 
             selectedItems: [],
             selectedNim: null,
             totalDenda: 0,
 
             toggleSelection(item) {
+                // Mencegah pemilihan jika NIM berbeda
                 if (this.selectedNim && this.selectedNim !== item.nim) {
                     alert('Hanya bisa memilih item dengan NIM yang sama.');
                     document.getElementById('checkbox-' + item.id).checked = false;
                     return;
                 }
+
                 const index = this.selectedItems.indexOf(item.id);
                 if (index > -1) {
+                    // Hapus item jika sudah ada (uncheck)
                     this.selectedItems.splice(index, 1);
                 } else {
+                    // Tambah item jika belum ada (check)
                     this.selectedItems.push(item.id);
                 }
+
+                // Update NIM yang dipilih
                 if (this.selectedItems.length > 0) {
                     const firstSelectedItem = this.peminjamanData.find(p => p.id === this.selectedItems[0]);
                     this.selectedNim = firstSelectedItem.nim;
                 } else {
                     this.selectedNim = null;
                 }
+                
                 this.calculateTotal();
             },
 
             calculateTotal() {
+                // Hitung total denda dari item yang dipilih
                 this.totalDenda = this.selectedItems.reduce((sum, currentId) => {
                     const item = this.peminjamanData.find(p => p.id === currentId);
                     return sum + (item ? item.denda : 0);
                 }, 0);
             },
-            
-            // PERBAIKAN UTAMA DI FUNGSI INI
+
             checkout() {
+                // Fungsi untuk redirect ke halaman checkout
                 if (this.selectedItems.length > 0) {
-                    // Kirim form tersembunyi yang sudah kita buat di atas
-                    this.$refs.checkoutForm.submit();
+                    const url = `{{ route('admin.checkout') }}?items=${JSON.stringify(this.selectedItems)}`;
+                    window.location.href = url;
                 } else {
                     alert('Pilih item terlebih dahulu');
                 }
