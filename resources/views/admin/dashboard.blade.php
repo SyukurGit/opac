@@ -5,7 +5,6 @@
 @section('content')
     {{-- SATU DIV PEMBUNGKUS UTAMA. Ini adalah kuncinya. --}}
     <div class="space-y-6">
-
         {{-- Bagian Kartu Statistik (sekarang ada di dalam pembungkus) --}}
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             

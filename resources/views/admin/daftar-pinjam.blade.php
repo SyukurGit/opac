@@ -57,7 +57,7 @@
                     <tr>
                         <th class="p-4 w-px"></th>
                         <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">NIM</div></th>
-                        <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Nama Peminjam</div></th>
+                        <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Kode buku</div></th>
                         <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Judul Buku</div></th>
                         <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Keterlambatan</div></th>
                         <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Denda</div></th>
@@ -82,7 +82,7 @@
                             </div>
                         </td>
                         <td class="p-4 whitespace-nowrap"><div class="text-left font-medium text-slate-800">{{ $item->nim }}</div></td>
-                        <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item->nama_peminjam }}</div></td>
+                        <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item->item_book }}</div></td>
                         <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700 max-w-xs truncate">{{ $item->judul_buku }}</div></td>
                         <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item->delay }}</div></td>
                         <td class="p-4 whitespace-nowrap">
@@ -90,7 +90,7 @@
                         </td>
                         <td class="p-4 whitespace-nowrap text-center">
                             {{-- Tombol Detail ini tidak berubah --}}
-                            <a href="{{ route('admin.checkout-detail', ['nim' => $item->nim]) }}"
+                            <a href="{{ route('admin.daftar-pinjam-detail', ['id' => $item->id]) }}"
                                 class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition duration-150 ease-in-out">
                                 Detail
                             </a>
