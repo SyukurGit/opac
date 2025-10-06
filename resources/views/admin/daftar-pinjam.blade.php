@@ -4,7 +4,12 @@
 
 @section('content')
 
-{{-- 1. Inisialisasi Alpine.js menggunakan komponen yang kita definisikan di <script> --}}
+{{-- Form tersembunyi untuk proses checkout --}}
+<form x-ref="checkoutForm" action="{{ route('admin.checkout') }}" method="POST" class="hidden">
+    @csrf
+    <input type="hidden" name="items" x-model="JSON.stringify(selectedItems)">
+</form>
+
 <div class="bg-white rounded-lg border border-slate-200" x-data="peminjamanComponent()">
     <div class="px-5 py-4 border-b border-slate-200">
         <div class="flex items-center justify-between">
@@ -17,10 +22,8 @@
                         type="search" placeholder="Cari NIM, Nama, atau Judul..." value="{{ request('search') }}">
                     <button class="absolute inset-0 right-auto" type="submit" aria-label="Cari">
                         <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 ml-3 mr-2" viewBox="0 0 16 16">
-                            <path
-                                d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
-                            <path
-                                d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
+                            <path d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
+                            <path d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
                         </svg>
                     </button>
                 </form>
@@ -32,33 +35,24 @@
                     <p class="text-sm text-slate-500">Total Denda Terpilih</p>
                     <p class="text-xl font-bold text-slate-800" x-text="`Rp ${totalDenda.toLocaleString('id-ID')}`"></p>
                 </div>
-
-
-               {{-- INI KODE PERBAIKANNYA --}}
-<div>
-    <form action="{{ route('admin.checkout') }}" method="POST">
-        @csrf
-        <input type="hidden" name="items" x-bind:value="selectedItems.join(',')">
-        <button type="submit"
-            x-bind:disabled="selectedItems.length === 0"
-            x-bind:class="{
-                'bg-gray-400 cursor-not-allowed': selectedItems.length === 0,
-                'bg-blue-600 hover:bg-blue-700': selectedItems.length > 0
-            }"
-            class="inline-block px-6 py-3 text-base font-semibold text-white rounded-lg transition-colors duration-300 whitespace-nowrap">
-            Checkout
-        </button>
-    </form>
-</div>
-
-
-
+                
+                <button @click="checkout()"
+                    :disabled="selectedItems.length === 0"
+                    :class="{
+                        'bg-gray-400 cursor-not-allowed': selectedItems.length === 0,
+                        'bg-blue-600 hover:bg-blue-700': selectedItems.length > 0
+                    }"
+                    class="inline-block px-6 py-3 text-base font-semibold text-white rounded-lg transition-colors duration-300 whitespace-nowrap">
+                    Checkout
+                </button>
             </div>
         </div>
     </div>
 
+    {{-- Tabel Data --}}
     <div class="overflow-x-auto">
         <table class="w-full table-auto">
+            {{-- (Isi tabel thead dan tbody sama seperti sebelumnya, tidak perlu diubah) --}}
             <thead class="text-xs font-semibold uppercase text-slate-500 bg-slate-50">
                 <tr>
                     <th class="p-4 w-px"></th>
@@ -78,13 +72,13 @@
                         <div class="flex items-center">
                             <label class="inline-flex">
                                 <input class="form-checkbox" type="checkbox"
+                                    :id="'checkbox-' + {{ $item->id }}"
                                     :checked="selectedItems.includes({{ $item->id }})"
-                                    @click="toggleCheckbox($event, {{ json_encode($item) }})"
+                                    @change="toggleSelection({{ json_encode($item) }})"
                                     :disabled="selectedNim !== null && selectedNim !== '{{ $item->nim }}'">
                             </label>
                         </div>
                     </td>
-                    {{-- PERBAIKAN DI BAWAH INI: Menggunakan $item->properti bukan $item['properti'] --}}
                     <td class="p-4 whitespace-nowrap"><div class="text-left font-medium text-slate-800">{{ $item->nim }}</div></td>
                     <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700">{{ $item->nama_peminjam }}</div></td>
                     <td class="p-4 whitespace-nowrap"><div class="text-left text-slate-700 max-w-xs truncate">{{ $item->judul_buku }}</div></td>
@@ -111,36 +105,31 @@
     </div>
 </div>
 
-
 <script>
     function peminjamanComponent() {
         return {
-            peminjamanData: @json($peminjaman),
+            peminjamanData: @json($peminjaman), 
             selectedItems: [],
             selectedNim: null,
             totalDenda: 0,
 
-            toggleCheckbox(event, item) {
-                const checkbox = event.target;
-                const id = item.id;
-                const nim = item.nim;
-
-                if (checkbox.checked) {
-                    if (this.selectedNim !== null && this.selectedNim !== nim) {
-                        event.preventDefault();
-                        alert('Hanya bisa memilih item dengan NIM yang sama.');
-                        return;
-                    }
+            toggleSelection(item) {
+                if (this.selectedNim && this.selectedNim !== item.nim) {
+                    alert('Hanya bisa memilih item dengan NIM yang sama.');
+                    document.getElementById('checkbox-' + item.id).checked = false;
+                    return;
                 }
-
-                if (checkbox.checked) {
-                    this.selectedItems.push(id);
-                    this.selectedNim = nim;
+                const index = this.selectedItems.indexOf(item.id);
+                if (index > -1) {
+                    this.selectedItems.splice(index, 1);
                 } else {
-                    this.selectedItems = this.selectedItems.filter(i => i !== id);
-                    if (this.selectedItems.length === 0) {
-                        this.selectedNim = null;
-                    }
+                    this.selectedItems.push(item.id);
+                }
+                if (this.selectedItems.length > 0) {
+                    const firstSelectedItem = this.peminjamanData.find(p => p.id === this.selectedItems[0]);
+                    this.selectedNim = firstSelectedItem.nim;
+                } else {
+                    this.selectedNim = null;
                 }
                 this.calculateTotal();
             },
@@ -151,41 +140,14 @@
                     return sum + (item ? item.denda : 0);
                 }, 0);
             },
-
-            async processPayment() {
-                if (this.selectedItems.length === 0) {
-                    alert('Silakan pilih item yang akan dibayar.');
-                    return;
-                }
-                const isConfirmed = confirm(`Anda akan memproses pembayaran untuk ${this.selectedItems.length} item dengan total denda Rp ${this.totalDenda.toLocaleString('id-ID')}. Lanjutkan?`);
-                if (!isConfirmed) return;
-
-                try {
-                    const response = await fetch('/api/v1/pembayaran', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            peminjaman_ids: this.selectedItems,
-                            metode_pembayaran: 'QRIS'
-                        })
-                    });
-                    const result = await response.json();
-                    if (!response.ok) {
-                        let errorMsg = result.message || 'Terjadi kesalahan.';
-                        if (result.errors) {
-                            errorMsg += '\n' + Object.values(result.errors).flat().join('\n');
-                        }
-                        throw new Error(errorMsg);
-                    }
-                    alert('Pembayaran berhasil diproses!');
-                    location.reload();
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Gagal memproses pembayaran: ' + error.message);
+            
+            // PERBAIKAN UTAMA DI FUNGSI INI
+            checkout() {
+                if (this.selectedItems.length > 0) {
+                    // Kirim form tersembunyi yang sudah kita buat di atas
+                    this.$refs.checkoutForm.submit();
+                } else {
+                    alert('Pilih item terlebih dahulu');
                 }
             }
         }

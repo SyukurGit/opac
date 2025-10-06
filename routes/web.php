@@ -41,6 +41,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/daftar-denda', [DaftarPinjamController::class, 'index'])->name('admin.daftar-pinjam');
         Route::get('/daftar-denda-detail/{id}', [DaftarPinjamController::class, 'show'])->name('admin.daftar-pinjam-detail');
-Route::post('/checkout', [DaftarPinjamController::class, 'checkout'])->name('admin.checkout');
-    // Anda bisa menambahkan rute admin lainnya di sini
+// Pastikan rute ini menggunakan Route::post
+Route::post('/checkout', [DaftarPinjamController::class, 'checkout'])->name('admin.checkout');    // Anda bisa menambahkan rute admin lainnya di sini
 });
