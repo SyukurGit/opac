@@ -57,6 +57,14 @@ class PeminjamanSeeder extends Seeder
                 'delay' => '+20 days',
                 'denda' => 20000,
             ],
+
+
+
+
+
+
+
+            
         ];
 
         // Masukkan data ke dalam tabel

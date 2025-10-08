@@ -22,7 +22,7 @@ class DaftarPinjamController extends Controller
                 $q->where('nim', 'like', '%' . $search . '%')
                   ->orWhere('nama_peminjam', 'like', '%' . $search . '%')
                   ->orWhere('judul_buku', 'like', '%' . $search . '%')
-                ->orWhere('item_book', 'like', "%{$search}%");
+          ->orWhere('item_book', 'like', "%{$search}%"); // <-- PERBAIKAN DI SINI
                 
 
             });

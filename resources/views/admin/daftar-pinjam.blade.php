@@ -4,6 +4,9 @@
 
 @section('content')
 
+{{-- ============ SEARCH (GET) TERPISAH TANPA GANGGU YANG LAIN ============ --}}
+<form id="searchForm" action="{{ route('admin.daftar-pinjam') }}" method="GET"></form>
+
 {{-- 1. Bungkus semua dengan tag <form> untuk mengirim data via POST --}}
 <form method="POST" action="{{ route('admin.checkout-detail') }}">
     @csrf {{-- Token keamanan Laravel --}}
@@ -12,22 +15,20 @@
     <div class="bg-white rounded-lg border border-slate-200" x-data="peminjamanComponent()">
         <div class="px-5 py-4 border-b border-slate-200">
             <div class="flex items-center justify-between">
-                {{-- Search Form (Tidak ada perubahan) --}}
-                <div>
-                    <form action="{{ route('admin.daftar-pinjam') }}" method="GET" class="relative">
-                        <label for="search" class="sr-only">Cari</label>
-                        <input id="search" name="search"
-                            class="form-input w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 bg-slate-50 text-slate-900"
-                            type="search" placeholder="Cari NIM, Nama, atau Judul..." value="{{ request('search') }}">
-                        <button class="absolute inset-0 right-auto" type="submit" aria-label="Cari">
-                            <svg class="w-4 h-4 shrink-0 fill-current text-slate-400 ml-3 mr-2" viewBox="0 0 16 16">
-                                <path
-                                    d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
-                                <path
-                                    d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
-                            </svg>
-                        </button>
-                    </form>
+
+                {{-- === FORM PENCARIAN (pakai atribut form, tidak nested) === --}}
+                <div class="relative w-full max-w-md">
+                    <label for="search" class="sr-only">Cari</label>
+                    <input id="search" name="search" form="searchForm"
+                           class="form-input w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 bg-slate-50 text-slate-900"
+                           type="search" placeholder="Cari NIM, Nama, atau Judul..." value="{{ request('search') }}">
+                    <button type="submit" form="searchForm" aria-label="Cari"
+                            class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <svg class="w-4 h-4 shrink-0 fill-current text-slate-400" viewBox="0 0 16 16">
+                            <path d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z"/>
+                            <path d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z"/>
+                        </svg>
+                    </button>
                 </div>
 
                 {{-- Tombol Checkout & Total Denda --}}
@@ -45,7 +46,7 @@
                                 'bg-blue-600 hover:bg-blue-700': selectedItems.length > 0
                             }"
                             class="inline-block px-6 py-3 text-base font-semibold text-white rounded-lg transition-colors duration-300 whitespace-nowrap">
-                        Checkout
+                        Bayar Semua
                     </button>
                 </div>
             </div>
