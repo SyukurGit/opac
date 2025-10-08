@@ -65,6 +65,13 @@
                     <div class="text-3xl font-bold text-indigo-600">Rp {{ number_format($totalDenda, 0, ',', '.') }}</div>
                 </div>
 
+
+
+                <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-5 mb-6">
+                    <div class="text-sm text-gray-600 mb-1">Total Dibayar</div>
+                    <div class="text-3xl font-bold text-indigo-600">Rp {{ number_format($totalDenda, 0, ',', '.') }}</div>
+                </div>
+
                 {{-- Pilihan Metode Pembayaran --}}
                 <div class="mb-6">
                     <h4 class="font-semibold text-gray-900 text-sm mb-3">Pilih Metode Pembayaran</h4>

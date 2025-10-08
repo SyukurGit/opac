@@ -5,6 +5,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\KeycloakController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DaftarPinjamController; // <-- Tambahkan ini
+use App\Http\Controllers\Admin\LaporanController; // <-- Tambahkan 
+use App\Http\Controllers\Admin\PenggunaController; // <-- Tambahkan ini
+
+
 
 
 
@@ -42,7 +46,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/daftar-denda', [DaftarPinjamController::class, 'index'])->name('admin.daftar-pinjam');
         Route::get('/daftar-denda-detail/{id}', [DaftarPinjamController::class, 'show'])->name('admin.daftar-pinjam-detail');
 // Pastikan rute ini menggunakan Route::post
-    Route::post('/checkout/detail', [DaftarPinjamController::class, 'showCheckout'])->name('admin.checkout-detail');
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
+
+
+            Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
+    Route::get('/pengguna/{user}/log', [PenggunaController::class, 'showLog'])->name('admin.pengguna.log');
+
+Route::post('/checkout/detail', [DaftarPinjamController::class, 'showCheckout'])->name('admin.checkout-detail');
 }
 
 

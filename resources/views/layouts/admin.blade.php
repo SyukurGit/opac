@@ -79,7 +79,7 @@
                     <span>Daftar Denda</span>
                 </a>
 
-                <a href="#"
+                <a href="{{ route('admin.laporan.index') }}"
                    class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 
                           hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@
                     <span>Laporan</span>
                 </a>
 
-                <a href="#"
+                <a href="{{ route('admin.pengguna.index') }}"
                    class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 
                           hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
