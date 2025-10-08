@@ -66,7 +66,6 @@
                 </div>
 
 
-
                 <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-5 mb-6">
                     <div class="text-sm text-gray-600 mb-1">Total Dibayar</div>
                     <div class="text-3xl font-bold text-indigo-600">Rp {{ number_format($totalDenda, 0, ',', '.') }}</div>
