@@ -11,9 +11,7 @@ use App\Models\LaporanPembayaran;
 
 class DaftarPinjamController extends Controller
 {
-    /**
-     * Menampilkan daftar data peminjaman dengan paginasi.
-     */
+    
     public function index(Request $request)
     {
         $query = Peminjaman::query();
@@ -45,6 +43,11 @@ class DaftarPinjamController extends Controller
         $peminjaman = Peminjaman::findOrFail($id);
         return view('admin.daftar-pinjam-detail', compact('peminjaman'));
     }
+
+
+
+
+    
 
     /**
      * Menampilkan halaman detail checkout.
