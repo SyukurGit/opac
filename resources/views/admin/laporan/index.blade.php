@@ -1,69 +1,82 @@
 @extends('layouts.admin')
 
-@section('header', 'Laporan Pembayaran Denda')
-
 @section('content')
+<div class="container mx-auto px-4 sm:px-8">
+    <div class="py-8">
+        <div>
+            <h2 class="text-2xl font-semibold leading-tight text-gray-800">Laporan Pembayaran Denda</h2>
+        </div>
 
-{{-- Filter & Pencarian --}}
-<div class="bg-white rounded-lg border border-slate-200 p-5 mb-6">
-    <form action="{{ route('admin.laporan.index') }}" method="GET">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {{-- Pencarian Keyword --}}
-            <div class="md:col-span-2">
-                <label for="search" class="sr-only">Cari</label>
+        <div class="my-4 flex sm:flex-row flex-col">
+            <form action="{{ route('admin.laporan.index') }}" method="GET" class="w-full">
                 <div class="relative">
-                    <input id="search" name="search"
-                        class="form-input w-full pl-9 pr-3 py-2 rounded-lg border-slate-300 focus:border-indigo-500"
-                        type="search" placeholder="Cari NIM, Nama, Judul, atau ID Transaksi..." value="{{ request('search') }}">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-slate-400" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
-                            <path d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <svg viewBox="0 0 24 24" class="h-4 w-4 text-gray-500">
+                            <path
+                                d="M10,18a8,8,0,1,1,8-8A8,8,0,0,1,10,18ZM1,10a9,9,0,1,0,9-9A9,9,0,0,0,1,10Z"
+                                fill="currentColor"></path>
+                            <path
+                                d="M22,23a1,1,0,0,1-.71-.29l-4-4a1,1,0,0,1,1.42-1.42l4,4a1,1,0,0,1,0,1.42A1,1,0,0,1,22,23Z"
+                                fill="currentColor"></path>
                         </svg>
-                    </div>
+                    </span>
+                    <input placeholder="Cari berdasarkan NIM, Nama, atau Item Book..." name="search"
+                        class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-10 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" value="{{ request('search') }}">
                 </div>
-            </div>
-            
-            {{-- Filter Tanggal Mulai --}}
-            
-        
-    </form>
-</div>
+            </form>
+        </div>
 
-{{-- Tabel Laporan --}}
-<div class="bg-white rounded-lg border border-slate-200">
-    <div class="overflow-x-auto">
-        <table class="w-full table-auto">
-            <thead class="text-xs font-semibold uppercase text-slate-500 bg-slate-50">
-                <tr>
-                    {{-- Sesuai permintaan, semua kolom ditampilkan dulu --}}
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">ID Laporan</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Status</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">NIM</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Nama Peminjam</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Judul Buku</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-right">Total Denda</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-right">Jumlah Dibayar</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Metode Bayar</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">ID Transaksi</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Tanggal Bayar</div></th>
-                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-center">Struk</div></th>
-                </tr>
-            </thead>
-            <tbody class="text-sm divide-y divide-slate-100">
-                {{-- Saat ini data masih kosong, jadi kita tampilkan pesan --}}
-                @forelse ($laporan as $item)
-                    {{-- Logika untuk menampilkan data akan ditambahkan di sini nanti --}}
-                @empty
-                    <tr>
-                        <td colspan="11" class="p-4 text-center text-slate-500">
-                            Tidak ada data laporan untuk ditampilkan. Silakan gunakan filter di atas.
-                        </td>
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-600 uppercase text-sm">
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left">Peminjam</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left">Detail Buku</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left">Denda Asli</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left">Total Dibayar</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-left">Info Pembayaran</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse ($laporanTergabung as $transaksi)
+                        @php
+                            // Ambil item pertama sebagai perwakilan data umum (nim, nama, dll)
+                            $perwakilan = $transaksi->first();
+                        @endphp
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                <p class="text-gray-900 font-semibold whitespace-no-wrap">{{ $perwakilan->nama_peminjam }}</p>
+                                <p class="text-gray-600 whitespace-no-wrap">{{ $perwakilan->nim }}</p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                <ul class="list-disc list-inside">
+                                    @foreach ($transaksi as $item)
+                                        <li>{{ $item->judul_buku }} ({{ $item->item_book }})</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">Rp {{ number_format($transaksi->sum('denda_asli'), 0, ',', '.') }}</p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                <p class="text-green-600 font-bold whitespace-no-wrap">Rp {{ number_format($perwakilan->denda_dibayar, 0, ',', '.') }}</p>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                <p class="text-gray-900 whitespace-no-wrap">{{ $perwakilan->metode_pembayaran }}</p>
+                                <p class="text-gray-600 whitespace-no-wrap">{{ $perwakilan->tanggal_bayar->format('d M Y, H:i') }}</p>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-10">
+                                <p class="text-gray-500">Tidak ada data laporan yang ditemukan.</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
-
-@endsection
+@endsection 

@@ -9,15 +9,10 @@ class LaporanPembayaran extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel yang terhubung dengan model ini.
-     *
-     * @var string
-     */
     protected $table = 'laporan_pembayaran';
 
     /**
-     * Atribut yang dapat diisi secara massal.
+     * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
@@ -27,11 +22,21 @@ class LaporanPembayaran extends Model
         'nama_peminjam',
         'judul_buku',
         'item_book',
+        'denda_asli',
         'denda_dibayar',
         'tanggal_bayar',
         'metode_pembayaran',
         'path_bukti_bayar',
         'path_laporan_excel',
         'catatan',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'tanggal_bayar' => 'datetime', // <-- TAMBAHKAN BARIS INI
     ];
 }

@@ -29,6 +29,8 @@ class DaftarPinjamController extends Controller
 
         $peminjaman = $query->latest()->paginate(10);
 
+        
+
         return view('admin.daftar-pinjam', compact('peminjaman'));
     }
 
@@ -107,7 +109,6 @@ class DaftarPinjamController extends Controller
                 'judul_buku'        => $peminjaman->judul_buku,
                 'item_book'         => $peminjaman->item_book,
                 'denda_asli'     => $peminjaman->denda, // Ambil langsung
-
                 'denda_dibayar'     => $validated['jumlah_dibayar'], // Ambil langsung
                 'tanggal_bayar'     => now(),
                 'metode_pembayaran' => $validated['payment_method'], // Ambil langsung
