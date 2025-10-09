@@ -17,6 +17,8 @@
                     <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Email</div></th>
                     <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Keycloak ID</div></th>
                     <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">Login Terakhir</div></th>
+                    <th class="p-4 whitespace-nowrap"><div class="font-semibold text-left">  Log Admin</div></th>
+
                 </tr>
             </thead>
             <tbody class="text-sm divide-y divide-slate-100">
