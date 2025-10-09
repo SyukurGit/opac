@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\View\View; // <-- PERBAIKAN 1: Tambahkan ini untuk View
+use Illuminate\Support\Facades\DB;
+use App\Models\LaporanPembayaran;
 
 class DaftarPinjamController extends Controller
 {
@@ -81,4 +83,79 @@ class DaftarPinjamController extends Controller
             'totalDenda' => $totalDenda,
         ]);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    // TAMBAHKAN FUNGSI BARU DI BAWAH INI
+    public function processCheckout(Request $request)
+    {
+        // 1. Validasi input dari form
+        $request->validate([
+            'peminjaman_ids' => 'required|array|min:1',
+            'jumlah_dibayar' => 'required|numeric|min:0',
+            'payment_method' => 'required|string',
+        ]);
+
+        $peminjamanIds = $request->input('peminjaman_ids');
+        $peminjamans = Peminjaman::whereIn('id', $peminjamanIds)->get();
+
+        // 2. Memulai transaksi database yang aman
+        DB::beginTransaction();
+        try {
+            foreach ($peminjamans as $peminjaman) {
+                // Buat laporan pembayaran
+                LaporanPembayaran::create([
+                    'peminjaman_id' => $peminjaman->id,
+                    'nim' => $peminjaman->nim,
+                    'nama_peminjam' => $peminjaman->nama_peminjam,
+                    'judul_buku' => $peminjaman->judul_buku,
+                    'nomor_panggil' => $peminjaman->nomor_panggil,
+                    'tanggal_pinjam' => $peminjaman->tanggal_pinjam,
+                    'tanggal_kembali' => $peminjaman->tanggal_kembali,
+                    'delay' => $peminjaman->delay,
+                    'denda' => $peminjaman->denda,
+                    // Ambil dari input form, bukan hardcode
+                    'denda_dibayar' => $request->input('jumlah_dibayar'), 
+                    'tanggal_bayar' => now(),
+                    // Ambil dari input form
+                    'metode_pembayaran' => $request->input('payment_method'), 
+                    'status' => 'Lunas',
+                ]);
+
+                // Hapus data dari tabel peminjaman
+                $peminjaman->delete();
+            }
+
+            // Jika semua berhasil, konfirmasi transaksi
+            DB::commit();
+
+            // 3. Arahkan ke halaman laporan dengan pesan sukses
+            return redirect()->route('admin.laporan.index')->with('success', 'Pembayaran berhasil diproses!');
+
+        } catch (\Exception $e) {
+            // Jika ada error, batalkan semua perubahan
+            DB::rollBack();
+
+            // 4. Kembali ke halaman sebelumnya dengan pesan error
+            return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran.');
+        }
+    
+}  
+
+
 } // <-- PERBAIKAN 3: Pastikan hanya ada satu kurung kurawal penutup untuk class

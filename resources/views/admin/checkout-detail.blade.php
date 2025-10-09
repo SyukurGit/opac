@@ -51,8 +51,7 @@
     {{-- Kolom Kanan: Opsi Pembayaran & Total --}}
     <div>
         {{-- Kita gunakan nama rute yang lebih spesifik nanti --}}
-        <form action="#" method="POST">
-            @csrf
+<form action="{{ route('admin.checkout.process') }}" method="POST">            @csrf
             {{-- Input hidden untuk ID peminjaman (tidak berubah) --}}
             @foreach ($items as $item)
                 <input type="hidden" name="peminjaman_ids[]" value="{{ $item->id }}">

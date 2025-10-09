@@ -52,6 +52,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
             Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
     Route::get('/pengguna/{user}/log', [PenggunaController::class, 'showLog'])->name('admin.pengguna.log');
 
+
+
+        Route::post('/admin/checkout', [DaftarPinjamController::class, 'processCheckout'])->name('admin.checkout.process');
+
 Route::post('/checkout/detail', [DaftarPinjamController::class, 'showCheckout'])->name('admin.checkout-detail');
 }
 
