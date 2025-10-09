@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PeminjamanSeeder::class, // <-- TAMBAHKAN BARIS INI
-                        LaporanPembayaranSeeder::class, // <-- TAMBAHKAN BARIS INI
+                        // LaporanPembayaranSeeder::class, // <-- TAMBAHKAN BARIS INI
 
         ]);
     }

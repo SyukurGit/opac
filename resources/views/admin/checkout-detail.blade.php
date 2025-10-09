@@ -50,6 +50,30 @@
 
     {{-- Kolom Kanan: Opsi Pembayaran & Total --}}
     <div>
+
+
+
+
+{{-- BLOK UNTUK MENAMPILKAN ERROR VALIDASI --}}
+@if ($errors->any())
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+        <p class="font-bold">Terjadi Kesalahan</p>
+        <ul class="mt-2 list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+
+
+
+
+
+
+
         {{-- Kita gunakan nama rute yang lebih spesifik nanti --}}
 <form action="{{ route('admin.checkout.process') }}" method="POST">            @csrf
             {{-- Input hidden untuk ID peminjaman (tidak berubah) --}}

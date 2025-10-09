@@ -46,6 +46,8 @@ class PembayaranController extends Controller
                     'nama_peminjam' => $peminjaman->nama_peminjam,
                     'judul_buku' => $peminjaman->judul_buku,
                     'item_book' => $peminjaman->item_book,
+                    'denda_asli' => $peminjaman->denda,
+
                     'denda_dibayar' => $peminjaman->denda,
                     'tanggal_bayar' => Carbon::now(),
                     'metode_pembayaran' => $metodePembayaran,

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('nama_peminjam');
             $table->string('judul_buku');
             $table->string('item_book');
+            $table->string('denda_asli');
+
             $table->unsignedInteger('denda_dibayar');
             $table->dateTime('tanggal_bayar');
             $table->string('metode_pembayaran');

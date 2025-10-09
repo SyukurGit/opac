@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Http\Controllers\Admin\log;
+
 
 class DaftarPinjamController extends Controller
 {
@@ -61,14 +63,14 @@ class DaftarPinjamController extends Controller
         $peminjamanIds = session('peminjaman_ids_for_checkout');
 
         if (empty($peminjamanIds)) {
-            return redirect()->route('admin.denda.index')
+            return redirect()->route('admin.laporan.index')
                 ->with('error', 'Silakan pilih item denda terlebih dahulu.');
         }
 
         $items = Peminjaman::whereIn('id', $peminjamanIds)->get();
 
         if ($items->isEmpty()) {
-             return redirect()->route('admin.denda.index')
+             return redirect()->route('admin.laporan.index')
                 ->with('error', 'Item yang dipilih tidak ditemukan atau sudah diproses.');
         }
 
@@ -82,53 +84,52 @@ class DaftarPinjamController extends Controller
         return view('admin.checkout-detail', compact('items', 'peminjam', 'totalDenda'));
     }
 
-    /**
-     * Memproses pembayaran akhir dari halaman detail (POST).
-     */
+   
     public function processCheckout(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'peminjaman_ids'   => 'required|array|min:1',
-            'peminjaman_ids.*' => 'exists:peminjaman,id',
-            'jumlah_dibayar'   => 'required|numeric|min:0',
-            'payment_method'   => 'required|string',
-        ]);
+{
+    // 1. Validasi disesuaikan dengan input tunggal
+    $validated = $request->validate([
+        'peminjaman_ids'   => 'required|array|min:1',
+        'peminjaman_ids.*' => 'exists:peminjaman,id',
+        'jumlah_dibayar'   => 'required|numeric|min:0', // Bukan lagi array
+        'payment_method'   => 'required|string',       // Bukan lagi array
+    ]);
 
-        $peminjamans = Peminjaman::whereIn('id', $validated['peminjaman_ids'])->get();
+    $peminjamans = Peminjaman::whereIn('id', $validated['peminjaman_ids'])->get();
 
-        DB::beginTransaction();
-        try {
-            foreach ($peminjamans as $peminjaman) {
-                LaporanPembayaran::create([
-                    'peminjaman_id'     => $peminjaman->id,
-                    'nim'               => $peminjaman->nim,
-                    'nama_peminjam'     => $peminjaman->nama_peminjam,
-                    'judul_buku'        => $peminjaman->judul_buku,
-                    'nomor_panggil'     => $peminjaman->nomor_panggil,
-                    'tanggal_pinjam'    => $peminjaman->tanggal_pinjam,
-                    'tanggal_kembali'   => $peminjaman->tanggal_kembali,
-                    'delay'             => $peminjaman->delay,
-                    'denda'             => $peminjaman->denda,
-                    'denda_dibayar'     => $validated['jumlah_dibayar'],
-                    'tanggal_bayar'     => now(),
-                    'metode_pembayaran' => $validated['payment_method'],
-                    'status'            => 'Lunas',
-                ]);
-                
-                $peminjaman->delete();
-            }
+    DB::beginTransaction();
+    try {
+        foreach ($peminjamans as $peminjaman) {
+            LaporanPembayaran::create([
+                'peminjaman_id'     => $peminjaman->id,
+                'nim'               => $peminjaman->nim,
+                'nama_peminjam'     => $peminjaman->nama_peminjam,
+                'judul_buku'        => $peminjaman->judul_buku,
+                'item_book'         => $peminjaman->item_book,
+                'denda_asli'     => $peminjaman->denda, // Ambil langsung
 
-            DB::commit();
-
-            session()->forget('peminjaman_ids_for_checkout');
-
-            return redirect()->route('admin.laporan.index')
-                ->with('success', 'Pembayaran berhasil diproses!');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran.');
+                'denda_dibayar'     => $validated['jumlah_dibayar'], // Ambil langsung
+                'tanggal_bayar'     => now(),
+                'metode_pembayaran' => $validated['payment_method'], // Ambil langsung
+                'catatan'           => 'Lunas', // Contoh catatan
+            ]);
+            
+            $peminjaman->delete();
         }
+
+        DB::commit();
+
+        session()->forget('peminjaman_ids_for_checkout');
+
+        // Redirect ke halaman laporan agar langsung terlihat hasilnya
+        return redirect()->route('admin.laporan.index')
+            ->with('success', 'Pembayaran berhasil diproses!');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        
+
+        return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran.');
     }
+}
 }

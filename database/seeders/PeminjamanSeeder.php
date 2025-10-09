@@ -8,9 +8,7 @@ use App\Models\Peminjaman;
 
 class PeminjamanSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+   
     public function run(): void
     {
         // Kosongkan tabel terlebih dahulu untuk menghindari data duplikat
