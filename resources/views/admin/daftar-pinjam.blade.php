@@ -8,8 +8,7 @@
 <form id="searchForm" action="{{ route('admin.daftar-pinjam') }}" method="GET"></form>
 
 {{-- 1. Bungkus semua dengan tag <form> untuk mengirim data via POST --}}
-<form method="POST" action="{{ route('admin.checkout-detail') }}">
-    @csrf {{-- Token keamanan Laravel --}}
+<form action="{{ route('admin.checkout.select') }}" method="POST">    @csrf {{-- Token keamanan Laravel --}}
 
     {{-- Komponen Alpine.js untuk mengelola state halaman --}}
     <div class="bg-white rounded-lg border border-slate-200" x-data="peminjamanComponent()">

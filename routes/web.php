@@ -56,8 +56,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
         Route::post('/admin/checkout', [DaftarPinjamController::class, 'processCheckout'])->name('admin.checkout.process');
 
-Route::post('/checkout/detail', [DaftarPinjamController::class, 'showCheckout'])->name('admin.checkout-detail');
-}
+// GANTI DENGAN DUA RUTE INI
+Route::post('/admin/checkout/select', [DaftarPinjamController::class, 'selectForCheckout'])->name('admin.checkout.select');
+Route::get('/admin/checkout/detail', [DaftarPinjamController::class, 'showCheckout'])->name('admin.checkout.detail');}
 
 
 
