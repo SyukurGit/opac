@@ -28,18 +28,17 @@ Route::get('/logout', [KeycloakController::class, 'logout'])->name('logout');
 Route::middleware('auth')->prefix('admin')->group(function () {
     
     // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard.index');
 
     // Daftar Pinjam / Denda
-    Route::get('/daftar-denda', [DaftarPinjamController::class, 'index'])->name('admin.daftar-pinjam');
-    Route::get('/daftar-denda-detail/{id}', [DaftarPinjamController::class, 'show'])->name('admin.daftar-pinjam-detail');
-
+    Route::get('/daftar-denda', [DaftarPinjamController::class, 'index'])->name('admin.daftar_denda.index');
+Route::get('/daftar-denda-detail/{peminjaman}', [DaftarPinjamController::class, 'show'])->name('admin.daftar_denda.detail');
     // Laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
 
     // Pengguna
-    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
-    Route::get('/pengguna/{user}/log', [PenggunaController::class, 'showLog'])->name('admin.pengguna.log');
+    Route::get('/admin', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
+    Route::get('/admin/{user}/log', [PenggunaController::class, 'showLog'])->name('admin.pengguna.log');
 
     // --- RUTE CHECKOUT DIPINDAHKAN KE SINI ---
     // Rute ini akan menangani pemilihan item untuk checkout dari halaman daftar-denda

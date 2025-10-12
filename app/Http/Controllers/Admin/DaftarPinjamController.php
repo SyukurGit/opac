@@ -31,12 +31,12 @@ class DaftarPinjamController extends Controller
 
         
 
-        return view('admin.daftar-pinjam', compact('peminjaman'));
+        return view('admin.daftar_denda.index', compact('peminjaman'));
     }
 
     public function show(Peminjaman $peminjaman): View
     {
-        return view('admin.daftar-pinjam-detail', compact('peminjaman'));
+        return view('admin.daftar_denda.detail', compact('peminjaman'));
     }
 
     /**
@@ -83,7 +83,7 @@ class DaftarPinjamController extends Controller
         
         $totalDenda = $items->sum('denda');
 
-        return view('admin.checkout-detail', compact('items', 'peminjam', 'totalDenda'));
+        return view('admin.daftar_denda.payment', compact('items', 'peminjam', 'totalDenda'));
     }
 
    

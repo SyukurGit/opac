@@ -19,7 +19,7 @@ class PenggunaController extends Controller
         $users = User::latest('updated_at')->paginate(15);
 
         // Kirim data users ke view
-        return view('admin.pengguna.index', compact('users'));
+        return view('admin.admin.index', compact('users'));
     }
 
 
@@ -27,6 +27,6 @@ class PenggunaController extends Controller
     {
         // Berkat Route Model Binding, Laravel otomatis mencari User berdasarkan ID di URL.
         // Untuk saat ini, kita hanya meneruskan data user ke view.
-        return view('admin.pengguna.log', compact('user'));
+        return view('admin.admin.log', compact('user'));
     }
-}
+} 

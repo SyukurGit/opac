@@ -5,7 +5,7 @@
 @section('content')
 
 {{-- ============ SEARCH (GET) TERPISAH TANPA GANGGU YANG LAIN ============ --}}
-<form id="searchForm" action="{{ route('admin.daftar-pinjam') }}" method="GET"></form>
+<form id="searchForm" action="{{ route('admin.daftar_denda.index') }}" method="GET"></form>
 
 {{-- 1. Bungkus semua dengan tag <form> untuk mengirim data via POST --}}
 <form action="{{ route('admin.checkout.select') }}" method="POST">    @csrf {{-- Token keamanan Laravel --}}
@@ -90,7 +90,7 @@
                         </td>
                         <td class="p-4 whitespace-nowrap text-center">
                             {{-- Tombol Detail ini tidak berubah --}}
-                            <a href="{{ route('admin.daftar-pinjam-detail', ['id' => $item->id]) }}"
+                            <a href="{{ route('admin.daftar_denda.detail', ['peminjaman' => $item->id]) }}"
                                 class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-1.5 px-3 rounded-md transition duration-150 ease-in-out">
                                 Detail
                             </a>
