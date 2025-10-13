@@ -133,4 +133,15 @@ class DaftarPinjamController extends Controller
         return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran.');
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 }

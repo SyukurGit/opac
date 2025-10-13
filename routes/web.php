@@ -51,5 +51,6 @@ Route::get('/daftar-denda-detail/{peminjaman}', [DaftarPinjamController::class, 
 
     // Rute ini yang akan memproses pembayaran dari form
     // URL: /admin/checkout, Metode: POST
+    
     Route::post('/checkout', [DaftarPinjamController::class, 'processCheckout'])->name('admin.checkout.process');
 });
