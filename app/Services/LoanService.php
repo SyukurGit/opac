@@ -31,27 +31,41 @@ class LoanService
      * @return array
      */
     public function getOverdueLoans(): array
-    {
-        try {
-            $response = $this->httpClient->get('/api/v2/loan-overdue');
+{
+    try {
+        $response = $this->httpClient->get('/opac/overdue');
 
-            if ($response->failed()) {
-                // Log error jika panggilan API gagal
-                Log::error('Failed to fetch overdue loans', [
-                    'status' => $response->status(),
-                    'body' => $response->body()
-                ]);
-                return []; // Kembalikan array kosong jika gagal
-            }
-
-            // Kembalikan hanya array 'data'
-            return $response->json('data', []);
-
-        } catch (\Exception $e) {
-            Log::error('Exception when fetching overdue loans', [
-                'message' => $e->getMessage()
+        if ($response->failed()) {
+            Log::error('Failed to fetch overdue loans', [
+                'status' => $response->status(),
+                'body' => $response->body()
             ]);
-            return []; // Kembalikan array kosong jika ada exception
+            return [];
         }
+
+        // Ambil data mentah dari API
+        $overdueLoans = $response->json('data', []);
+
+        // Proses setiap item untuk membulatkan nilai ke bawah
+        $processedLoans = array_map(function($loan) {
+            // Pastikan kuncinya ada sebelum diakses
+            if (isset($loan['keterlambatan'])) {
+                $loan['keterlambatan'] = floor($loan['keterlambatan']);
+            }
+            if (isset($loan['denda'])) {
+                $loan['denda'] = floor($loan['denda']);
+            }
+            return $loan;
+        }, $overdueLoans);
+
+        // Kembalikan data yang sudah diproses
+        return $processedLoans;
+
+    } catch (\Exception $e) {
+        Log::error('Exception when fetching overdue loans', [
+            'message' => $e->getMessage()
+        ]);
+        return [];
     }
+}
 }

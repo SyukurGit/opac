@@ -23,18 +23,25 @@ class DaftarPinjamController extends Controller
         $overdueLoansRaw = $this->loanService->getOverdueLoans();
 
         // 2. Proses setiap item untuk menambahkan data kalkulasi
-        $processedLoans = array_map(function ($loan) {
-            $dueDate = Carbon::parse($loan['due_date']);
-            $daysOverdue = $dueDate->isPast() ? $dueDate->diffInDays(now()) : 0;
+       $processedLoans = array_map(function ($loan) {
+    $dueDate = Carbon::parse($loan['due_date']);
+    $daysOverdue = $dueDate->isPast() ? $dueDate->diffInDays(now()) : 0;
 
-            // Tambahkan field baru ke setiap item
-            $loan['keterlambatan'] = $daysOverdue;
-            $loan['denda'] = $daysOverdue * self::DENDA_PER_HARI;
+    $loan['keterlambatan'] = $daysOverdue;
 
-            return $loan;
-        }, $overdueLoansRaw);
+    // --- UBAH BAGIAN INI ---
+    // 1. Hitung denda seperti biasa
+    $denda_kalkulasi = $daysOverdue * self::DENDA_PER_HARI;
 
-        // 3. Implementasi fungsionalitas pencarian (opsional tapi berguna)
+    // 2. Bulatkan hasilnya ke bawah ke ribuan terdekat
+    //    floor(2283288 / 1000) * 1000  ==>  floor(2283.288) * 1000  ==>  2283 * 1000  ==>  2283000
+    $loan['denda'] = floor($denda_kalkulasi / 1000) * 1000;
+    // --- AKHIR PERUBAHAN ---
+
+    return $loan;
+}, $overdueLoansRaw);
+
+        // 3. Implementasi fungsionalitas pencarian
         if ($request->filled('search')) {
             $searchTerm = strtolower($request->input('search'));
             $processedLoans = array_filter($processedLoans, function ($loan) use ($searchTerm) {
