@@ -38,4 +38,10 @@ return [
         ],
     ],
 
+
+
+    'loan' => [
+        'base_url' => env('LOAN_API_BASE_URL'),
+    ],
+
 ];
